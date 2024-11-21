@@ -4,17 +4,7 @@ from PyPDF2 import PdfReader
 import re
 import matplotlib.pyplot as plt
 
-# Load NLP Model
-from spacy.cli import download
-
-# Try to load the model
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    # If model not found, download it
-    print("Downloading spaCy model...")
-    download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
 # Predefined job categories and associated skills
 CATEGORIES = {
