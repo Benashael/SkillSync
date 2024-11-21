@@ -28,12 +28,26 @@ CATEGORIES = {
 
 # Mapped terms for short forms
 KEYWORD_MAPPINGS = {
-    "Machine Learning": ["ML", "machine learnin"],
-    "Search Engine Optimization": ["SEO", "search optimization"],
-    "Data Analysis": ["data analytics", "analysis"],
-    "JavaScript": ["JS", "javascript"],
-    "Natural Language Processing": ["NLP", "text processing"],
-    "Penetration Testing": ["Pentest", "security testing"],
+    "Machine Learning": ["ML", "machine learning", "machine learnin", "m/l", "machine-learning", "ml algorithms"],
+    "Search Engine Optimization": ["SEO", "search optimization", "search engine optimization", "seo strategy", "seo techniques", "site optimization"],
+    "Data Analysis": ["data analytics", "analysis", "data analysis", "data interpretation", "analyzing data", "data insights"],
+    "JavaScript": ["JS", "javascript", "java script", "js frameworks", "js programming", "javascript coding"],
+    "Natural Language Processing": ["NLP", "text processing", "natural lang proc", "nlp models", "language processing", "natural-language-processing"],
+    "Penetration Testing": ["Pentest", "security testing", "penetration test", "vulnerability assessment", "pentesting", "ethical hacking"],
+    "Python": ["py", "python programming", "python scripting", "python lang", "python code", "pythonic"],
+    "SQL": ["structured query language", "sql queries", "database querying", "sql scripting", "sql commands", "relational database"],
+    "Deep Learning": ["DL", "deep-learning", "deep neural networks", "deep nn", "dl algorithms", "deep neural net"],
+    "Data Visualization": ["data viz", "data visualization", "charts", "graphs", "dashboards", "visualizing data"],
+    "Project Management": ["PM", "project mgr", "project handling", "proj mgmt", "project coordination", "project leadership"],
+    "Agile": ["scrum", "agile methodology", "agile framework", "agile processes", "agile project management", "agile software development"],
+    "Cloud Computing": ["cloud infra", "cloud infrastructure", "cloud services", "aws", "azure", "gcp"],
+    "UI/UX Design": ["user interface design", "ux design", "user experience", "ui/ux", "interface design", "ux/ui"],
+    "Mobile Development": ["mobile dev", "app dev", "mobile app development", "mobile programming", "app creation", "native apps"],
+    "Cybersecurity": ["network security", "cyber security", "cybersec", "information security", "infosec", "cyber protection"],
+    "SEO": ["seo", "search engine opt", "website optimization", "seo marketing", "seo campaigns", "seo strategies"],
+    "Artificial Intelligence": ["AI", "artificial intelligence", "ai models", "ai techniques", "machine intelligence", "artificial-intelligence"],
+    "Data Engineering": ["data engg", "data pipelines", "data engineering", "etl processes", "data processing", "data integration"],
+    "Big Data": ["bigdata", "big-data", "data lakes", "hadoop", "spark", "big data technologies"]
 }
 
 # Function to clean and normalize text
