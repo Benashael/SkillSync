@@ -456,16 +456,6 @@ def score_trending_skills(resume_text):
     score = len(found_skills) * 0.5  # Each skill adds 0.5 to the score
     return min(score * 5, 5)  # Cap trending skills score at 5
 
-
-# Final Score Calculation
-def calculate_final_score(resume_text, jd_text):
-    quality_score = score_quality(resume_text)
-    relevance_score = score_relevance(resume_text, jd_text)
-    trending_score = score_trending_skills(resume_text)
-
-    final_score = (quality_score * 0.50) + (relevance_score * 0.45) + (trending_score * 0.05)
-    return round(final_score, 2)
-
 # Function to extract text from a file
 def extract_text(file):
     try:
@@ -517,13 +507,14 @@ if st.button("Score My Resume"):
             trending_score = score_trending_skills(resume_text)
 
             # Show the scores separately
-            st.write(f"Quality Score: {quality_score} / 50")
-            st.write(f"Relevance Score: {relevance_score} / 45")
-            st.write(f"Trending Skills Score: {trending_score} / 5")
-
+            st.write(f"Quality Score: {round(quality_score, 2)} / 50")
+            st.write(f"Relevance Score: {round(relevance_score, 2)} / 45")
+            st.write(f"Trending Skills Score: {round(trending_score, 2)} / 5")
+            
             # Calculate final score (optional for testing purposes)
-            final_score = quality_score + relevance_score + trending_score
+            final_score = round(quality_score + relevance_score + trending_score, 2)
             st.success(f"Your final resume score is: {final_score} / 100")
+
 
             if final_score < 70:
                 st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
