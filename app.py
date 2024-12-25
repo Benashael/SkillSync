@@ -121,7 +121,7 @@ def score_relevance(resume_text, jd_text):
     # Set base score as 20 and add the calculated score
     total_score = 20 + relevance_score
 
-    return min(total_score, 45)  # Ensure the total score doesn't exceed 45
+    return matching_words, min(total_score, 45)  # Ensure the total score doesn't exceed 45
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
@@ -204,7 +204,6 @@ if st.button("Score My Resume"):
             st.write(f"Quality Score: {quality_score} / 50")
             st.write(f"Relevance Score: {relevance_score} / 45")
             st.write(f"Trending Skills Score: {trending_score} / 5")
-            st.write(matching_words)
 
             # Calculate final score (optional for testing purposes)
             final_score = quality_score + relevance_score + trending_score
