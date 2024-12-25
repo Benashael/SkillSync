@@ -413,7 +413,7 @@ def score_relevance(resume_text, jd_text):
     
     total_score = 10 + relevance_score  # Add base score of 20
     
-    return matching_words, jd_keywords, min(total_score, 43)  # Return matching words and capped score
+    return min(total_score, 43)  # Return matching words and capped score
 
 
 # Trending Skills Score Calculation (5% Weightage)
@@ -501,8 +501,8 @@ if st.button("Score My Resume"):
             # Calculate final score (optional for testing purposes)
             final_score = quality_score + relevance_score + trending_score
             st.success(f"Your final resume score is: {final_score} / 100")
-            st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
-            # Calculate the score
-            final_score = calculate_final_score(resume_text, jd_text)
-            st.success(f"Your final resume score is: {final_score} / 100")
-            st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+
+            if score < 70:
+                st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+            else:
+                st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
