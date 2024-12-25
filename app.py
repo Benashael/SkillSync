@@ -31,6 +31,16 @@ KEYWORD_MAPPINGS = {
     "Data Governance": ["data policies", "data compliance", "data stewardship", "data privacy", "data management"],
     "Leadership": ["team management", "mentorship", "decision making", "vision planning", "strategy development"],
     "Communication": ["public speaking", "presentation skills", "writing", "verbal communication", "interpersonal skills"]
+    "Teamwork": ["collaboration", "team player", "cross-functional collaboration", "working with teams", "team coordination"],
+    "Problem Solving": ["critical thinking", "problem solving", "analytical thinking", "troubleshooting", "solution-oriented"],
+    "Adaptability": ["flexibility", "adaptability", "open to change", "quick learner", "resilience", "work under pressure"],
+    "Time Management": ["time management", "prioritization", "task management", "deadline driven", "multitasking", "efficiency"],
+    "Creativity": ["innovation", "creative thinking", "idea generation", "design thinking", "out-of-the-box thinking"],
+    "Microsoft Word": ["microsoft word", "word processing", "document formatting", "creating reports", "word documents"],
+    "Microsoft Excel": ["microsoft excel", "data analysis", "spreadsheet", "pivot tables", "formulas", "excel macros"],
+    "Microsoft PowerPoint": ["microsoft powerpoint", "presentation slides", "ppt", "slide design", "powerpoint presentations"],
+    "Microsoft Outlook": ["microsoft outlook", "email communication", "outlook calendar", "meeting scheduling", "email management"],
+    "Microsoft Access": ["microsoft access", "database management", "queries", "relational databases", "data entry"]
 }
 
 CATEGORIES = {
