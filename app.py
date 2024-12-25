@@ -88,13 +88,13 @@ def score_quality(resume_text):
     headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
     for header in headers:
         if header in resume_text.lower():
-            score += 5  # Assign points for each proper header
+            score += 3  # Assign points for each proper header
 
     # Check strong action verbs
-    score += sum(5 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
+    score += sum(3 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
 
     # Check quantifiers
-    score += sum(5 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+    score += sum(2 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
@@ -123,8 +123,21 @@ def score_relevance(resume_text, jd_text):
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
-    score = sum(0.5 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
+    # Convert resume text to lowercase for case-insensitive matching
+    resume_text_lower = resume_text.lower()
+    
+    # Create a set to track skills found in the resume (avoiding duplicates)
+    found_skills = set()
+
+    # Check each skill in the trending skills list
+    for skill in TRENDING_SKILLS:
+        if skill.lower() in resume_text_lower:
+            found_skills.add(skill.lower())  # Add to set to avoid duplicates
+
+    # Calculate the score based on the number of unique skills found
+    score = len(found_skills) * 0.5  # Each skill adds 0.5 to the score
     return min(score * 5, 5)  # Cap trending skills score at 5
+
 
 # Final Score Calculation
 def calculate_final_score(resume_text, jd_text):
