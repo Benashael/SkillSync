@@ -515,7 +515,7 @@ def extract_text(file):
 if "resume_file" not in st.session_state:
     st.session_state.resume_file = None
 
-if "jd_text" not in st.session_state:
+if "jd_text" not in st.session_state: 
     st.session_state.jd_text = None
 
 if "more_details" not in st.session_state:
