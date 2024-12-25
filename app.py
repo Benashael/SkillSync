@@ -502,7 +502,7 @@ if st.button("Score My Resume"):
             final_score = quality_score + relevance_score + trending_score
             st.success(f"Your final resume score is: {final_score} / 100")
 
-            if score < 70:
+            if final_score < 70:
                 st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
             else:
                 st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
