@@ -63,11 +63,23 @@ STRONG_ACTION_VERBS = [
 ]
 
 QUANTIFIERS = [
-    "increased revenue by", "reduced costs by", "improved efficiency by", "generated savings of", "enhanced performance by",
-    "achieved growth of", "delivered results with", "surpassed goals by", "completed projects within", "exceeded expectations by"
+    "increased", "reduced", "improved", "generated", "enhanced", "achieved", "delivered", "surpassed", "completed", "exceeded"
 ]
 
-TRENDING_SKILLS = ["AI", "Artificial Intelligence", "Data Science", "Machine Learning", "Microsoft Excel", "PowerPoint", "Word"]
+TRENDING_SKILLS = [
+    "AI", "Artificial Intelligence", "Machine Learning", "ML", "AI Models", "Deep Learning", "DL",
+    "Data Science", "Data Analytics", "Data Analysis", "Big Data", "Data Engineering", "Data Mining",
+    "Natural Language Processing", "NLP", "Computer Vision", "CV", "Python", "Python Programming", "Python Scripting",
+    "R Programming", "TensorFlow", "TF", "PyTorch", "Scikit-learn", "Keras", "Deep Neural Networks", "DNN",
+    "Artificial Neural Networks", "ANN", "Neural Networks", "Data Visualization", "Tableau", "Power BI",
+    "Microsoft Excel", "Excel", "PowerPoint", "PPT", "Word", "Google Analytics", "Google Sheets", "SQL",
+    "Structured Query Language", "NoSQL", "MongoDB", "MySQL", "PostgreSQL", "Oracle", "Hadoop", "Spark",
+    "AWS", "Amazon Web Services", "Azure", "Google Cloud", "GCP", "Docker", "Kubernetes", "DevOps", "CI/CD",
+    "Git", "Version Control", "Blockchain", "Cryptocurrency", "Ethereum", "Smart Contracts", "Dapps",
+    "SEO", "Search Engine Optimization", "SEM", "PPC", "Content Marketing", "Marketing Automation",
+    "Agile", "Scrum", "Scrum Master", "Project Management", "Jira", "Kanban", "DevOps", "Scrum Framework"
+]
+
 
 # Quality Score Calculation (50% Weightage)
 def score_quality(resume_text):
@@ -79,14 +91,17 @@ def score_quality(resume_text):
             score += 5  # Assign points for each proper header
 
     # Check strong action verbs
-    score += sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
+    score += sum(5 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
 
     # Check quantifiers
-    score += sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+    score += sum(5 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
 
-    # Check length (favor one-page resumes)
-    if len(resume_text.split()) <= 400:  # Rough estimate for one page
-        score += 10
+    # Check length (favor resumes with 300 to 750 words)
+    resume_length = len(resume_text.split())  # Define the resume length
+    if 300 <= resume_length <= 750:
+        score += 20  # Award more points for resumes of this length
+    else:
+        score += 5
 
     return min(score, 50)  # Cap the quality score at 50
 
@@ -98,7 +113,13 @@ def score_relevance(resume_text, jd_text):
             if variation in resume_text.lower() and variation in jd_text.lower():
                 matching_words.add(keyword)
 
-    return min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
+    # Calculate the relevance score based on matching keywords
+    relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
+    
+    # Set base score as 20 and add the calculated score
+    total_score = 20 + relevance_score
+
+    return min(total_score, 45)  # Ensure the total score doesn't exceed 45
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
