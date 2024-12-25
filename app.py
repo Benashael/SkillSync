@@ -138,7 +138,7 @@ def score_relevance(resume_text, jd_text):
     relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)
     total_score = 20 + relevance_score  # Add base score of 20
     
-    return matching_words, KEYWORD_MAPPINGS, min(total_score, 45)
+    return min(total_score, 45)
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
