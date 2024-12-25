@@ -40,7 +40,9 @@ KEYWORD_MAPPINGS = {
     "Microsoft Excel": ["microsoft excel", "data analysis", "spreadsheet", "pivot tables", "formulas", "excel macros"],
     "Microsoft PowerPoint": ["microsoft powerpoint", "presentation slides", "ppt", "slide design", "powerpoint presentations"],
     "Microsoft Outlook": ["microsoft outlook", "email communication", "outlook calendar", "meeting scheduling", "email management"],
-    "Microsoft Access": ["microsoft access", "database management", "queries", "relational databases", "data entry"]
+    "Microsoft Access": ["microsoft access", "database management", "queries", "relational databases", "data entry"],
+    "LMS Administration": ["lms", "learning management system", "training support"],
+    "Microsoft Office": ["word", "excel", "powerpoint"]
 }
 
 CATEGORIES = {
@@ -136,7 +138,7 @@ def score_relevance(resume_text, jd_text):
     relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)
     total_score = 20 + relevance_score  # Add base score of 20
     
-    return matching_words, min(total_score, 45)
+    return matching_words, KEYWORD_MAPPINGS, min(total_score, 45)
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
