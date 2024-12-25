@@ -364,24 +364,24 @@ def score_quality(resume_text):
     headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
     for header in headers:
         if header in resume_text.lower():
-            score += 3  # Assign points for each proper header
+            score += 2  # Assign points for each proper header
 
-    # Check strong action verbs
-    score += sum(3 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
-
-    # Check quantifiers
-    score += sum(2 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+   # Check strong action verbs (eliminates duplicates)
+    score += sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
+    
+    # Check quantifiers (eliminates duplicates)
+    score += sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
-    if 250 <= resume_length <= 750:
+    if 300 <= resume_length <= 750:
         score += 20  # Award more points for resumes of this length
-    elif 150 <= resume_length <= 249:
+    elif 150 <= resume_length <= 299:
         score += 10
     else:
         score += 5
 
-    return min(score, 50)  # Cap the quality score at 50
+    return min(score, 49)  # Cap the quality score at 50
 
 # Relevance Score Calculation (45% Weightage)
 def score_relevance(resume_text, jd_text):
