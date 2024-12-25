@@ -98,8 +98,10 @@ def score_quality(resume_text):
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
-    if 300 <= resume_length <= 750:
+    if 250 <= resume_length <= 750:
         score += 20  # Award more points for resumes of this length
+    elif 150 <= resume_length <= 249:
+        score += 10
     else:
         score += 5
 
@@ -113,9 +115,11 @@ def score_relevance(resume_text, jd_text):
             if variation in resume_text.lower() and variation in jd_text.lower():
                 matching_words.add(keyword)
 
+    print("Matching Words:", matching_words) 
+
     # Calculate the relevance score based on matching keywords
     relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
-    
+
     # Set base score as 20 and add the calculated score
     total_score = 20 + relevance_score
 
