@@ -127,18 +127,30 @@ def score_relevance(resume_text, jd_text):
     jd_text = re.sub(r'[^\w\s]', '', jd_text.lower())
     
     matching_words = set()
-    
-    # Match keywords
+    jd_keywords = set()  # Store keywords found in JD
+
+    # Match keywords in JD
     for keyword, variations in KEYWORD_MAPPINGS.items():
         for variation in variations:
-            if variation in resume_text and variation in jd_text:
+            if variation in jd_text:
+                jd_keywords.add(keyword)  # Add to JD keywords
+    
+    # Match keywords in both JD and resume
+    for keyword in jd_keywords:
+        for variation in KEYWORD_MAPPINGS[keyword]:
+            if variation in resume_text:
                 matching_words.add(keyword)
     
     # Calculate relevance score
-    relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)
+    if jd_keywords:  # Avoid division by zero
+        relevance_score = min(len(matching_words) / len(jd_keywords) * 100, 45)
+    else:
+        relevance_score = 0  # No relevant keywords in JD
+    
     total_score = 20 + relevance_score  # Add base score of 20
     
-    return min(total_score, 45)
+    return min(total_score, 45)  # Return matching words and capped score
+
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
