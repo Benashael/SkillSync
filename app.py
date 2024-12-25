@@ -180,6 +180,20 @@ if st.button("Score My Resume"):
         elif detect(resume_text) != "en" or detect(jd_text) != "en":
             st.error("Both the resume and job description must be in English.")
         else:
+            # Calculate individual scores for each category
+            quality_score = score_quality(resume_text)
+            relevance_score = score_relevance(resume_text, jd_text)
+            trending_score = score_trending_skills(resume_text)
+
+            # Show the scores separately
+            st.write(f"Quality Score: {quality_score} / 50")
+            st.write(f"Relevance Score: {relevance_score} / 45")
+            st.write(f"Trending Skills Score: {trending_score} / 5")
+
+            # Calculate final score (optional for testing purposes)
+            final_score = quality_score + relevance_score + trending_score
+            st.success(f"Your final resume score is: {final_score} / 100")
+            st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
             # Calculate the score
             final_score = calculate_final_score(resume_text, jd_text)
             st.success(f"Your final resume score is: {final_score} / 100")
