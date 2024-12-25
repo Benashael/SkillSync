@@ -599,11 +599,9 @@ elif page == "Detailed Breakdown":
         else:
             quality_score, relevance_score, trending_score = calculate_scores()
             if quality_score is not None:
+                show_details()
                 final_score = round(quality_score + relevance_score + trending_score, 2)
                 st.success(f"**Your final resume score is: {final_score} / 100**")
-                st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
-                st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
-                st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
                 # Provide feedback based on the final score
                 if final_score < 70:
                     st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
