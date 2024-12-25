@@ -67,7 +67,8 @@ QUANTIFIERS = [
     "achieved growth of", "delivered results with", "surpassed goals by", "completed projects within", "exceeded expectations by"
 ]
 
-# Function to extract text from a file
+TRENDING_SKILLS = ["AI", "Artificial Intelligence", "Data Science", "Machine Learning", "Microsoft Excel", "PowerPoint", "Word"]
+
 def extract_text(file):
     try:
         if file.type == "application/pdf":
@@ -83,7 +84,42 @@ def extract_text(file):
     except Exception as e:
         return None
 
-# Function to score resume against JD
+def score_quality(resume_text):
+    score = 0
+    headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
+    for header in headers:
+        if header in resume_text.lower():
+            score += 5  # Assign points for each proper header
+
+    score += sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
+    score += sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+
+    if len(resume_text.split()) <= 400:  # Rough estimate for one page
+        score += 10
+
+    return min(score, 50)  # Cap the quality score at 50
+
+def score_relevance(resume_text, jd_text):
+    matching_words = set()
+    for keyword, variations in KEYWORD_MAPPINGS.items():
+        for variation in variations:
+            if variation in resume_text.lower() and variation in jd_text.lower():
+                matching_words.add(keyword)
+
+    return min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
+
+def score_trending_skills(resume_text):
+    score = sum(1 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
+    return min(score * 5, 5)  # Cap trending skills score at 5
+
+def calculate_final_score(resume_text, jd_text):
+    quality_score = score_quality(resume_text)
+    relevance_score = score_relevance(resume_text, jd_text)
+    trending_score = score_trending_skills(resume_text)
+
+    final_score = quality_score + relevance_score + trending_score
+    return round(final_score, 2)
+
 def score_resume(resume_text, jd_text):
     resume_words = set(resume_text.lower().split())
     jd_words = set(jd_text.lower().split())
@@ -134,4 +170,3 @@ if st.button("Score My Resume"):
             score = score_resume(resume_text, jd_text)
             st.success(f"Your resume's compatibility score with the job description is: {score}%")
             st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
-
