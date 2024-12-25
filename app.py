@@ -507,13 +507,13 @@ if st.button("Score My Resume"):
             trending_score = score_trending_skills(resume_text)
 
             # Show the scores separately
-            st.write(f"Quality Score: {round(quality_score, 2)} / 50")
-            st.write(f"Relevance Score: {round(relevance_score, 2)} / 45")
-            st.write(f"Trending Skills Score: {round(trending_score, 2)} / 5")
+            st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
+            st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
+            st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
             
             # Calculate final score (optional for testing purposes)
             final_score = round(quality_score + relevance_score + trending_score, 2)
-            st.success(f"Your final resume score is: {final_score} / 100")
+            st.success(f"**Your final resume score is: {final_score} / 100**")
 
 
             if final_score < 70:
