@@ -123,7 +123,7 @@ def score_relevance(resume_text, jd_text):
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
-    score = sum(1 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
+    score = sum(0.5 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
     return min(score * 5, 5)  # Cap trending skills score at 5
 
 # Final Score Calculation
