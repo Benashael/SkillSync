@@ -515,38 +515,44 @@ def extract_text(file):
 st.title("Resume Scoring Application")
 st.write("Upload your resume and job description to get a compatibility score.")
 
+# Initialize session state for uploaded files and dropdowns
+if "resume_file" not in st.session_state:
+    st.session_state.resume_file = None
+
+if "jd_text" not in st.session_state:
+    st.session_state.jd_text = None
+
+if "more_details" not in st.session_state:
+    st.session_state.more_details = False  # Default state is closed
+
 # Upload Resume
-resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
 
 # Upload or Paste JD
 jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"])
 if jd_input_method == "Upload File":
     jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
-    jd_text = extract_text(jd_file) if jd_file else None
+    st.session_state.jd_text = extract_text(jd_file) if jd_file else None
 else:
-    jd_text = st.text_area("Paste the Job Description:").strip()
-
-# Initialize session state for the dropdown
-if "more_details" not in st.session_state:
-    st.session_state.more_details = False  # Default state is closed
+    st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
 
 # Process and Score
 if st.button("Score My Resume"):
-    if not resume_file:
+    if not st.session_state.resume_file:
         st.error("Please upload your resume.")
-    elif not jd_text:
+    elif not st.session_state.jd_text:
         st.error("Please provide the job description.")
     else:
-        resume_text = extract_text(resume_file)
+        resume_text = extract_text(st.session_state.resume_file)
 
         if not resume_text:
             st.error("Unable to extract text from the resume. Ensure the format is correct.")
-        elif detect(resume_text) != "en" or detect(jd_text) != "en":
+        elif detect(resume_text) != "en" or detect(st.session_state.jd_text) != "en":
             st.error("Both the resume and job description must be in English.")
         else:
             # Calculate individual scores for each category
             quality_score = score_quality(resume_text)
-            relevance_score = score_relevance(resume_text, jd_text)
+            relevance_score = score_relevance(resume_text, st.session_state.jd_text)
             trending_score = score_trending_skills(resume_text)
 
             # Show the scores separately
@@ -554,17 +560,19 @@ if st.button("Score My Resume"):
             st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
             st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
             
-            # Calculate final score (optional for testing purposes)
+            # Calculate final score
             final_score = round(quality_score + relevance_score + trending_score, 2)
             st.success(f"**Your final resume score is: {final_score} / 100**")
 
-            st.session_state.more_details = st.checkbox("View Detailed Breakdown")
+            # Use session state for the dropdown toggle
+            st.session_state.more_details = st.checkbox(
+                "View Detailed Breakdown", value=st.session_state.more_details
+            )
             if st.session_state.more_details:
                 show_details()
                 
-
+            # Provide feedback based on the final score
             if final_score < 70:
                 st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
             else:
                 st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
-                
