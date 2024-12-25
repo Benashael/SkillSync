@@ -30,7 +30,7 @@ KEYWORD_MAPPINGS = {
     "Quality Assurance": ["qa", "testing", "quality testing", "automation testing", "manual testing", "bug tracking"],
     "Data Governance": ["data policies", "data compliance", "data stewardship", "data privacy", "data management"],
     "Leadership": ["team management", "mentorship", "decision making", "vision planning", "strategy development"],
-    "Communication": ["public speaking", "presentation skills", "writing", "verbal communication", "interpersonal skills"]
+    "Communication": ["public speaking", "presentation skills", "writing", "verbal communication", "interpersonal skills"],
     "Teamwork": ["collaboration", "team player", "cross-functional collaboration", "working with teams", "team coordination"],
     "Problem Solving": ["critical thinking", "problem solving", "analytical thinking", "troubleshooting", "solution-oriented"],
     "Adaptability": ["flexibility", "adaptability", "open to change", "quick learner", "resilience", "work under pressure"],
