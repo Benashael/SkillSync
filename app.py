@@ -454,7 +454,7 @@ def score_trending_skills(resume_text):
 
     # Calculate the score based on the number of unique skills found
     score = len(found_skills) * 1  # Each skill adds 1 to the score
-    return min(score, 5)  # Cap trending skills score at 5
+    return score, min(score, 5)  # Cap trending skills score at 5
 
 def show_details():
     st.write("### Detailed Breakdown of Your Resume Score")
