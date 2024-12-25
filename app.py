@@ -453,8 +453,8 @@ def score_trending_skills(resume_text):
             found_skills.add(skill.lower())  # Add to set to avoid duplicates
 
     # Calculate the score based on the number of unique skills found
-    score = len(found_skills) * 0.5  # Each skill adds 0.5 to the score
-    return min(score * 5, 5)  # Cap trending skills score at 5
+    score = len(found_skills) * 1  # Each skill adds 1 to the score
+    return min(score, 5)  # Cap trending skills score at 5
 
 def show_details():
     st.write("### Detailed Breakdown of Your Resume Score")
@@ -510,8 +510,6 @@ def extract_text(file):
         return text.strip()
     except Exception as e:
         return None
-
-import streamlit as st
 
 # Initialize session state
 if "resume_file" not in st.session_state:
