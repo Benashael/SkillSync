@@ -526,6 +526,10 @@ if jd_input_method == "Upload File":
 else:
     jd_text = st.text_area("Paste the Job Description:").strip()
 
+# Initialize session state for the dropdown
+if "more_details" not in st.session_state:
+    st.session_state.more_details = False  # Default state is closed
+
 # Process and Score
 if st.button("Score My Resume"):
     if not resume_file:
@@ -554,8 +558,8 @@ if st.button("Score My Resume"):
             final_score = round(quality_score + relevance_score + trending_score, 2)
             st.success(f"**Your final resume score is: {final_score} / 100**")
 
-            more_details = st.checkbox("View Detailed Breakdown")
-            if more_details:
+            st.session_state.more_details = st.checkbox("View Detailed Breakdown")
+            if st.session_state.more_details:
                 show_details()
                 
 
