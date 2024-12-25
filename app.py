@@ -69,6 +69,52 @@ QUANTIFIERS = [
 
 TRENDING_SKILLS = ["AI", "Artificial Intelligence", "Data Science", "Machine Learning", "Microsoft Excel", "PowerPoint", "Word"]
 
+# Quality Score Calculation (50% Weightage)
+def score_quality(resume_text):
+    score = 0
+    # Check formatting (e.g., headers, one-page limit)
+    headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
+    for header in headers:
+        if header in resume_text.lower():
+            score += 5  # Assign points for each proper header
+
+    # Check strong action verbs
+    score += sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
+
+    # Check quantifiers
+    score += sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+
+    # Check length (favor one-page resumes)
+    if len(resume_text.split()) <= 400:  # Rough estimate for one page
+        score += 10
+
+    return min(score, 50)  # Cap the quality score at 50
+
+# Relevance Score Calculation (45% Weightage)
+def score_relevance(resume_text, jd_text):
+    matching_words = set()
+    for keyword, variations in KEYWORD_MAPPINGS.items():
+        for variation in variations:
+            if variation in resume_text.lower() and variation in jd_text.lower():
+                matching_words.add(keyword)
+
+    return min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
+
+# Trending Skills Score Calculation (5% Weightage)
+def score_trending_skills(resume_text):
+    score = sum(1 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
+    return min(score * 5, 5)  # Cap trending skills score at 5
+
+# Final Score Calculation
+def calculate_final_score(resume_text, jd_text):
+    quality_score = score_quality(resume_text)
+    relevance_score = score_relevance(resume_text, jd_text)
+    trending_score = score_trending_skills(resume_text)
+
+    final_score = (quality_score * 0.50) + (relevance_score * 0.45) + (trending_score * 0.05)
+    return round(final_score, 2)
+
+# Function to extract text from a file
 def extract_text(file):
     try:
         if file.type == "application/pdf":
@@ -83,59 +129,6 @@ def extract_text(file):
         return text.strip()
     except Exception as e:
         return None
-
-def score_quality(resume_text):
-    score = 0
-    headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
-    for header in headers:
-        if header in resume_text.lower():
-            score += 5  # Assign points for each proper header
-
-    score += sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
-    score += sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
-
-    if len(resume_text.split()) <= 400:  # Rough estimate for one page
-        score += 10
-
-    return min(score, 50)  # Cap the quality score at 50
-
-def score_relevance(resume_text, jd_text):
-    matching_words = set()
-    for keyword, variations in KEYWORD_MAPPINGS.items():
-        for variation in variations:
-            if variation in resume_text.lower() and variation in jd_text.lower():
-                matching_words.add(keyword)
-
-    return min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
-
-def score_trending_skills(resume_text):
-    score = sum(1 for skill in TRENDING_SKILLS if skill.lower() in resume_text.lower())
-    return min(score * 5, 5)  # Cap trending skills score at 5
-
-def calculate_final_score(resume_text, jd_text):
-    quality_score = score_quality(resume_text)
-    relevance_score = score_relevance(resume_text, jd_text)
-    trending_score = score_trending_skills(resume_text)
-
-    final_score = quality_score + relevance_score + trending_score
-    return round(final_score, 2)
-
-def score_resume(resume_text, jd_text):
-    resume_words = set(resume_text.lower().split())
-    jd_words = set(jd_text.lower().split())
-    matching_words = set()
-    strong_verbs_score = sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
-    quantifiers_score = sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
-
-    for keyword, variations in KEYWORD_MAPPINGS.items():
-        for variation in variations:
-            if variation in resume_words and variation in jd_words:
-                matching_words.add(keyword)
-
-    score = len(matching_words) / len(KEYWORD_MAPPINGS) * 100
-    boost_score = strong_verbs_score * 2 + quantifiers_score * 3
-    total_score = min(score + boost_score, 100)
-    return round(total_score, 2)
 
 # Streamlit UI
 st.title("Resume Scoring Application")
@@ -167,6 +160,6 @@ if st.button("Score My Resume"):
             st.error("Both the resume and job description must be in English.")
         else:
             # Calculate the score
-            score = score_resume(resume_text, jd_text)
-            st.success(f"Your resume's compatibility score with the job description is: {score}%")
+            final_score = calculate_final_score(resume_text, jd_text)
+            st.success(f"Your final resume score is: {final_score} / 100")
             st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
