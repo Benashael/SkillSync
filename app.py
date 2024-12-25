@@ -119,19 +119,24 @@ def score_quality(resume_text):
 
 # Relevance Score Calculation (45% Weightage)
 def score_relevance(resume_text, jd_text):
+    # Normalize the texts
+    import re
+    resume_text = re.sub(r'[^\w\s]', '', resume_text.lower())
+    jd_text = re.sub(r'[^\w\s]', '', jd_text.lower())
+    
     matching_words = set()
+    
+    # Match keywords
     for keyword, variations in KEYWORD_MAPPINGS.items():
         for variation in variations:
-            if variation in resume_text.lower() and variation in jd_text.lower():
-                matching_words.add(keyword) 
-
-    # Calculate the relevance score based on matching keywords
-    relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
-
-    # Set base score as 20 and add the calculated score
-    total_score = 20 + relevance_score
-
-    return matching_words, min(total_score, 45)  # Ensure the total score doesn't exceed 45
+            if variation in resume_text and variation in jd_text:
+                matching_words.add(keyword)
+    
+    # Calculate relevance score
+    relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)
+    total_score = 20 + relevance_score  # Add base score of 20
+    
+    return matching_words, min(total_score, 45)
 
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
