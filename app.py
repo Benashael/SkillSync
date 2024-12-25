@@ -113,9 +113,7 @@ def score_relevance(resume_text, jd_text):
     for keyword, variations in KEYWORD_MAPPINGS.items():
         for variation in variations:
             if variation in resume_text.lower() and variation in jd_text.lower():
-                matching_words.add(keyword)
-
-    print("Matching Words:", matching_words) 
+                matching_words.add(keyword) 
 
     # Calculate the relevance score based on matching keywords
     relevance_score = min(len(matching_words) / len(KEYWORD_MAPPINGS) * 100, 45)  # Cap relevance score at 45
@@ -206,6 +204,7 @@ if st.button("Score My Resume"):
             st.write(f"Quality Score: {quality_score} / 50")
             st.write(f"Relevance Score: {relevance_score} / 45")
             st.write(f"Trending Skills Score: {trending_score} / 5")
+            st.write(matching_words)
 
             # Calculate final score (optional for testing purposes)
             final_score = quality_score + relevance_score + trending_score
