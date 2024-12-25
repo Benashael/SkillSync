@@ -456,6 +456,45 @@ def score_trending_skills(resume_text):
     score = len(found_skills) * 0.5  # Each skill adds 0.5 to the score
     return min(score * 5, 5)  # Cap trending skills score at 5
 
+def show_details():
+    st.write("### Detailed Breakdown of Your Resume Score")
+
+    # Display Subcategories in Quality Score Calculation
+    st.write("#### Content Quality Rating - Subcategories:")
+    header_score = 0
+    action_verb_score = 0
+    quantifier_score = 0
+    content_score = 0
+
+    # Check headers
+    headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
+    for header in headers:
+        if header in resume_text.lower():
+            header_score += 2  # Assign points for each proper header
+
+    # Check strong action verbs (eliminates duplicates)
+    action_verb_score = sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
+    
+    # Check quantifiers (eliminates duplicates)
+    quantifier_score = sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
+
+    # Check length (favor resumes with 300 to 750 words)
+    resume_length = len(resume_text.split())  # Define the resume length
+    if 300 <= resume_length <= 750:
+        content_score = 20  # Award more points for resumes of this length
+    elif 150 <= resume_length <= 299:
+        content_score = 10
+    else:
+        content_score = 5
+
+    # Write the individual scores using st.write
+    st.write("### Detailed Quality Score Breakdown:")
+    st.write(f"- **Score for Headers:** {round(header_score, 2)}")
+    st.write(f"- **Score for Action Verbs:** {round(action_verb_score, 2)}")
+    st.write(f"- **Score for Quantifiers:** {round(quantifier_score, 2)}")
+    st.write(f"- **Score for Content (Length):** {round(content_score, 2)}")
+    st.write(f"**Total Quality Score:** {min(round(header_score + action_verb_score + quantifier_score + content_score, 2), 49)} / 50")
+
 # Function to extract text from a file
 def extract_text(file):
     try:
@@ -520,3 +559,7 @@ if st.button("Score My Resume"):
                 st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
             else:
                 st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
+
+            # Show the 'View Detailed Calculation' button after the resume is scored
+            if st.button("View Detailed Calculation"):
+                show_details()
