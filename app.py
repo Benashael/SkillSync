@@ -149,7 +149,7 @@ def score_relevance(resume_text, jd_text):
     
     total_score = 20 + relevance_score  # Add base score of 20
     
-    return min(total_score, 45)  # Return matching words and capped score
+    return matching_words, jd_keywords, min(total_score, 45)  # Return matching words and capped score
 
 
 # Trending Skills Score Calculation (5% Weightage)
