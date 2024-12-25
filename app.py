@@ -1,29 +1,7 @@
 import streamlit as st
-import spacy
+import docx2txt
 from PyPDF2 import PdfReader
-import re
-import matplotlib.pyplot as plt
-
-nlp = spacy.load("en_core_web_sm")
-
-# Predefined job categories and associated skills
-CATEGORIES = {
-    "Data Science": ["Python", "Machine Learning", "Data Analysis", "SQL"],
-    "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
-    "Mobile Development": ["Kotlin", "Swift", "React Native", "Flutter"],
-    "Cybersecurity": ["Network Security", "Penetration Testing", "Risk Assessment", "Cryptography"],
-    "Digital Marketing": ["SEO", "Google Analytics", "Content Marketing", "PPC"],
-    "Product Management": ["Agile", "Scrum", "Roadmap Planning", "Stakeholder Management"],
-    "UI/UX Design": ["Figma", "Sketch", "Wireframing", "Prototyping"],
-    "Cloud Computing": ["AWS", "Azure", "Google Cloud", "DevOps"],
-    "AI/ML Engineering": ["Deep Learning", "NLP", "TensorFlow", "PyTorch"],
-    "Business Analysis": ["Requirements Gathering", "Process Mapping", "Stakeholder Communication"],
-    "Finance": ["Budgeting", "Forecasting", "Financial Modeling", "Risk Analysis"],
-    "Healthcare IT": ["EHR", "HIPAA Compliance", "Medical Imaging", "Telemedicine"],
-    "Game Development": ["Unity", "Unreal Engine", "C#", "3D Modeling"],
-    "E-commerce": ["Shopify", "Magento", "Inventory Management", "Customer Retention"],
-    "Operations Management": ["Six Sigma", "Supply Chain Management", "Logistics", "Lean"],
-}
+from langdetect import detect
 
 # Mapped terms for short forms
 KEYWORD_MAPPINGS = {
@@ -46,113 +24,114 @@ KEYWORD_MAPPINGS = {
     "SEO": ["seo", "search engine opt", "website optimization", "seo marketing", "seo campaigns", "seo strategies"],
     "Artificial Intelligence": ["AI", "artificial intelligence", "ai models", "ai techniques", "machine intelligence", "artificial-intelligence"],
     "Data Engineering": ["data engg", "data pipelines", "data engineering", "etl processes", "data processing", "data integration"],
-    "Big Data": ["bigdata", "big-data", "data lakes", "hadoop", "spark", "big data technologies"]
+    "Big Data": ["bigdata", "big-data", "data lakes", "hadoop", "spark", "big data technologies"],
+    "DevOps": ["devops", "ci/cd", "continuous integration", "continuous delivery", "docker", "kubernetes"],
+    "Blockchain": ["blockchain", "distributed ledger", "cryptocurrency", "ethereum", "smart contracts", "dapps"],
+    "Quality Assurance": ["qa", "testing", "quality testing", "automation testing", "manual testing", "bug tracking"],
+    "Data Governance": ["data policies", "data compliance", "data stewardship", "data privacy", "data management"],
+    "Leadership": ["team management", "mentorship", "decision making", "vision planning", "strategy development"],
+    "Communication": ["public speaking", "presentation skills", "writing", "verbal communication", "interpersonal skills"]
 }
 
-# Function to clean and normalize text
-def clean_text(text):
-    text = re.sub(r"\s+", " ", text)  # Remove extra spaces
-    text = re.sub(r"[^\w\s]", "", text)  # Remove special characters
-    return text.lower()
+CATEGORIES = {
+    "Data Science": ["Python", "Machine Learning", "Data Analysis", "SQL"],
+    "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
+    "Mobile Development": ["Kotlin", "Swift", "React Native", "Flutter"],
+    "Cybersecurity": ["Network Security", "Penetration Testing", "Risk Assessment", "Cryptography"],
+    "Digital Marketing": ["SEO", "Google Analytics", "Content Marketing", "PPC"],
+    "Product Management": ["Agile", "Scrum", "Roadmap Planning", "Stakeholder Management"],
+    "UI/UX Design": ["Figma", "Sketch", "Wireframing", "Prototyping"],
+    "Cloud Computing": ["AWS", "Azure", "Google Cloud", "DevOps"],
+    "AI/ML Engineering": ["Deep Learning", "NLP", "TensorFlow", "PyTorch"],
+    "Business Analysis": ["Requirements Gathering", "Process Mapping", "Stakeholder Communication"],
+    "Finance": ["Budgeting", "Forecasting", "Financial Modeling", "Risk Analysis"],
+    "Healthcare IT": ["EHR", "HIPAA Compliance", "Medical Imaging", "Telemedicine"],
+    "Game Development": ["Unity", "Unreal Engine", "C#", "3D Modeling"],
+    "E-commerce": ["Shopify", "Magento", "Inventory Management", "Customer Retention"],
+    "Operations Management": ["Six Sigma", "Supply Chain Management", "Logistics", "Lean"],
+    "DevOps": ["Docker", "Kubernetes", "CI/CD", "Jenkins"],
+    "Blockchain": ["Smart Contracts", "Ethereum", "Bitcoin", "Decentralized Apps"],
+    "Quality Assurance": ["Automation Testing", "Manual Testing", "Bug Tracking", "Performance Testing"]
+}
 
-# Normalize keywords
-def normalize_keywords(keywords):
-    normalized = []
-    for keyword in keywords:
-        normalized.append(keyword.lower())
-        if keyword in KEYWORD_MAPPINGS:
-            normalized.extend([kw.lower() for kw in KEYWORD_MAPPINGS[keyword]])
-    return list(set(normalized))
+STRONG_ACTION_VERBS = [
+    "Achieved", "Advised", "Analyzed", "Built", "Collaborated", "Conducted", "Created", "Delivered", "Designed", 
+    "Developed", "Directed", "Enhanced", "Established", "Executed", "Expanded", "Facilitated", "Generated", 
+    "Improved", "Implemented", "Initiated", "Innovated", "Led", "Managed", "Maximized", "Optimized", 
+    "Orchestrated", "Planned", "Produced", "Reduced", "Resolved", "Streamlined", "Supervised", "Transformed", 
+    "Utilized"
+]
 
-# Extract text from PDF
-def extract_text_from_pdf(uploaded_file):
+QUANTIFIERS = [
+    "increased revenue by", "reduced costs by", "improved efficiency by", "generated savings of", "enhanced performance by",
+    "achieved growth of", "delivered results with", "surpassed goals by", "completed projects within", "exceeded expectations by"
+]
+
+# Function to extract text from a file
+def extract_text(file):
     try:
-        reader = PdfReader(uploaded_file)
-        text = " ".join(page.extract_text() for page in reader.pages)
-        if not text.strip():
-            raise ValueError("No readable text found in the resume.")
-        return text
-    except Exception as e:
-        raise ValueError(f"Error reading PDF: {e}")
-
-# Extract keywords
-def extract_keywords(text):
-    doc = nlp(text)
-    return [token.text for token in doc if token.is_alpha and not token.is_stop]
-
-# Calculate match score
-def calculate_match_score(resume_keywords, job_keywords, critical_skills):
-    matched_keywords = [word for word in resume_keywords if word in job_keywords]
-    critical_matches = [word for word in matched_keywords if word in critical_skills]
-    score = ((len(matched_keywords) / len(job_keywords)) * 7 if job_keywords else 0) + \
-            ((len(critical_matches) / len(critical_skills)) * 3 if critical_skills else 0)
-    return score, matched_keywords, critical_matches
-
-# Visualize results
-def visualize_keywords(matched, unmatched):
-    plt.figure(figsize=(6, 4))
-    plt.bar(["Matched", "Unmatched"], [len(matched), len(unmatched)], color=["green", "red"])
-    plt.title("Keyword Match Results")
-    st.pyplot(plt)
-
-# Streamlit App
-st.title("🚀 Enhanced Resume Analyzer & Job Matchmaker")
-st.subheader("Analyze your resume and match it with job descriptions.")
-
-# Job category selection
-job_category = st.selectbox("📂 Select Job Category", options=["Select"] + list(CATEGORIES.keys()))
-
-# Job description input
-job_description = st.text_area("📝 Paste the Job Description (optional)", height=150, placeholder="E.g., Requirements: Python, ML, SQL")
-
-# Resume upload
-uploaded_file = st.file_uploader("📄 Upload Your Resume (PDF)", type=["pdf"])
-
-# Analyze button
-if st.button("Analyze Resume"):
-    try:
-        if job_category == "Select" and not job_description.strip():
-            raise ValueError("Please select a job category or provide a job description.")
-
-        # Get job keywords
-        job_keywords = []
-        if job_description.strip():
-            job_keywords = extract_keywords(clean_text(job_description))
-        elif job_category != "Select":
-            job_keywords = CATEGORIES[job_category]
-        
-        job_keywords = normalize_keywords(job_keywords)
-
-        st.write("### Extracted Job Keywords 📝")
-        st.write(job_keywords)
-
-        # Resume processing
-        if uploaded_file:
-            resume_text = extract_text_from_pdf(uploaded_file)
-            resume_keywords = normalize_keywords(extract_keywords(clean_text(resume_text)))
-
-            st.write("### Extracted Resume Keywords 📄")
-            st.write(resume_keywords)
-
-            # Match calculation
-            critical_skills = job_keywords[:3]  # Take first 3 as critical
-            score, matched_keywords, critical_matches = calculate_match_score(resume_keywords, job_keywords, critical_skills)
-
-            st.write(f"### Match Score: **{score:.2f}/10** 🎯")
-            st.success("✅ Strong match!" if score > 7 else "🟡 Moderate match; needs improvement." if score > 5 else "❌ Significant gaps detected.")
-
-            unmatched_keywords = [word for word in job_keywords if word not in matched_keywords]
-            st.write("**Matched Keywords:**", matched_keywords)
-            st.write("**Unmatched Keywords:**", unmatched_keywords)
-
-            if unmatched_keywords:
-                st.warning("🔍 Missing keywords in your resume:")
-                st.write(unmatched_keywords)
-
-            visualize_keywords(matched_keywords, unmatched_keywords)
+        if file.type == "application/pdf":
+            reader = PdfReader(file)
+            text = " ".join(page.extract_text() for page in reader.pages)
+        elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            text = docx2txt.process(file)
+        elif file.type == "text/plain":
+            text = file.read().decode("utf-8")
         else:
-            raise ValueError("Please upload your resume.")
-    except ValueError as ve:
-        st.error(str(ve))
+            return None
+        return text.strip()
     except Exception as e:
-        st.error(f"An unexpected error occurred: {e}")
+        return None
+
+# Function to score resume against JD
+def score_resume(resume_text, jd_text):
+    resume_words = set(resume_text.lower().split())
+    jd_words = set(jd_text.lower().split())
+    matching_words = set()
+    strong_verbs_score = sum(1 for verb in STRONG_ACTION_VERBS if verb.lower() in resume_text.lower())
+    quantifiers_score = sum(1 for quantifier in QUANTIFIERS if quantifier.lower() in resume_text.lower())
+
+    for keyword, variations in KEYWORD_MAPPINGS.items():
+        for variation in variations:
+            if variation in resume_words and variation in jd_words:
+                matching_words.add(keyword)
+
+    score = len(matching_words) / len(KEYWORD_MAPPINGS) * 100
+    boost_score = strong_verbs_score * 2 + quantifiers_score * 3
+    total_score = min(score + boost_score, 100)
+    return round(total_score, 2)
+
+# Streamlit UI
+st.title("Resume Scoring Application")
+st.write("Upload your resume and job description to get a compatibility score.")
+
+# Upload Resume
+resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+
+# Upload or Paste JD
+jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"])
+if jd_input_method == "Upload File":
+    jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+    jd_text = extract_text(jd_file) if jd_file else None
+else:
+    jd_text = st.text_area("Paste the Job Description:").strip()
+
+# Process and Score
+if st.button("Score My Resume"):
+    if not resume_file:
+        st.error("Please upload your resume.")
+    elif not jd_text:
+        st.error("Please provide the job description.")
+    else:
+        resume_text = extract_text(resume_file)
+
+        if not resume_text:
+            st.error("Unable to extract text from the resume. Ensure the format is correct.")
+        elif detect(resume_text) != "en" or detect(jd_text) != "en":
+            st.error("Both the resume and job description must be in English.")
+        else:
+            # Calculate the score
+            score = score_resume(resume_text, jd_text)
+            st.success(f"Your resume's compatibility score with the job description is: {score}%")
+            st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+
