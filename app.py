@@ -143,7 +143,7 @@ def score_relevance(resume_text, jd_text):
     
     # Calculate relevance score
     if jd_keywords:  # Avoid division by zero
-        relevance_score = min(len(matching_words) / len(jd_keywords) * 100, 45)
+        relevance_score = min(len(matching_words) / len(jd_keywords) * 56, 45)
     else:
         relevance_score = 0  # No relevant keywords in JD
     
