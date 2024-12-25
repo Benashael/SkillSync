@@ -575,7 +575,7 @@ elif page == "Simple Resume Score":
             if quality_score is not None:
                 st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
                 st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
-                st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
+                st.write(f"**Emerging Skills Index: {trending_score} / 5**")
                 final_score = round(quality_score + relevance_score + trending_score, 2)
                 st.success(f"**Your final resume score is: {final_score} / 100**")
                 # Provide feedback based on the final score
