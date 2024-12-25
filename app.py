@@ -549,6 +549,8 @@ if st.button("Score My Resume"):
             st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
             st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
             st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
+
+            show_details()
             
             # Calculate final score (optional for testing purposes)
             final_score = round(quality_score + relevance_score + trending_score, 2)
@@ -559,7 +561,4 @@ if st.button("Score My Resume"):
                 st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
             else:
                 st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
-
-            # Show the 'View Detailed Calculation' button after the resume is scored
-            if st.button("View Detailed Calculation"):
-                show_details()
+                
