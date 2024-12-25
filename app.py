@@ -356,6 +356,27 @@ TRENDING_SKILLS = [
     "Agile", "Scrum", "Scrum Master", "Project Management", "Jira", "Kanban", "DevOps", "Scrum Framework"
 ]
 
+BASE_CATEGORY = {
+    "Base Category": [
+        "sales",
+        "ground staff",
+        "business development associate",
+        "graduate trainee",
+        "customer service",
+        "client handling",
+        "field work",
+        "operations",
+        "onboarding",
+        "trainee",
+        "intern",
+        "entry level",
+        "junior associate",
+        "support staff",
+        "administration",
+        "team assistant",
+        "general staff"
+    ]
+}
 
 # Quality Score Calculation (50% Weightage)
 def score_quality(resume_text):
@@ -408,6 +429,8 @@ def score_relevance(resume_text, jd_text):
     # Calculate relevance score
     if jd_keywords:  # Avoid division by zero
         relevance_score = min(len(matching_words) / len(jd_keywords) * 35, 35)
+    elif any(term in jd_text for term in BASE_CATEGORY):  # Check for Base Category terms
+        relevance_score = 25  # JD comes under Base Category
     else:
         relevance_score = 0  # No relevant keywords in JD
     
