@@ -511,11 +511,9 @@ def extract_text(file):
     except Exception as e:
         return None
 
-# Streamlit UI
-st.title("Resume Scoring Application")
-st.write("Upload your resume and job description to get a compatibility score.")
+import streamlit as st
 
-# Initialize session state for uploaded files and dropdowns
+# Initialize session state
 if "resume_file" not in st.session_state:
     st.session_state.resume_file = None
 
@@ -523,56 +521,97 @@ if "jd_text" not in st.session_state:
     st.session_state.jd_text = None
 
 if "more_details" not in st.session_state:
-    st.session_state.more_details = False  # Default state is closed
+    st.session_state.more_details = False
 
-# Upload Resume
-st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+# Shared Function: Clear Inputs
+def clear_inputs():
+    st.session_state.resume_file = None
+    st.session_state.jd_text = None
+    st.session_state.more_details = False
 
-# Upload or Paste JD
-jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"])
-if jd_input_method == "Upload File":
-    jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
-    st.session_state.jd_text = extract_text(jd_file) if jd_file else None
-else:
-    st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
-
-# Process and Score
-if st.button("Score My Resume"):
-    if not st.session_state.resume_file:
-        st.error("Please upload your resume.")
-    elif not st.session_state.jd_text:
-        st.error("Please provide the job description.")
+# Function: File Upload
+def file_upload_section():
+    st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+    jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"])
+    if jd_input_method == "Upload File":
+        jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+        st.session_state.jd_text = extract_text(jd_file) if jd_file else None
     else:
-        resume_text = extract_text(st.session_state.resume_file)
+        st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
 
-        if not resume_text:
-            st.error("Unable to extract text from the resume. Ensure the format is correct.")
-        elif detect(resume_text) != "en" or detect(st.session_state.jd_text) != "en":
-            st.error("Both the resume and job description must be in English.")
+# Function: Resume Scoring Logic
+def calculate_scores():
+    resume_text = extract_text(st.session_state.resume_file)
+    if not resume_text:
+        st.error("Unable to extract text from the resume. Ensure the format is correct.")
+        return None, None, None
+    if detect(resume_text) != "en" or detect(st.session_state.jd_text) != "en":
+        st.error("Both the resume and job description must be in English.")
+        return None, None, None
+    
+    quality_score = score_quality(resume_text)
+    relevance_score = score_relevance(resume_text, st.session_state.jd_text)
+    trending_score = score_trending_skills(resume_text)
+    return quality_score, relevance_score, trending_score
+
+# Navigation Menu
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Home", "Simple Resume Score", "Detailed Breakdown"])
+
+# Home Page
+if page == "Home":
+    st.title("Welcome to the Resume Scoring Application")
+    st.write("Navigate using the sidebar to score your resume or get a detailed breakdown.")
+
+# Simple Resume Score Page
+elif page == "Simple Resume Score":
+    st.title("Simple Resume Score")
+    file_upload_section()
+    if st.button("Score My Resume"):
+        if not st.session_state.resume_file:
+            st.error("Please upload your resume.")
+        elif not st.session_state.jd_text:
+            st.error("Please provide the job description.")
         else:
-            # Calculate individual scores for each category
-            quality_score = score_quality(resume_text)
-            relevance_score = score_relevance(resume_text, st.session_state.jd_text)
-            trending_score = score_trending_skills(resume_text)
+            quality_score, relevance_score, trending_score = calculate_scores()
+            if quality_score is not None:
+                st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
+                st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
+                st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
+                final_score = round(quality_score + relevance_score + trending_score, 2)
+                st.success(f"**Your final resume score is: {final_score} / 100**")
+                # Provide feedback based on the final score
+                if final_score < 70:
+                    st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+                else:
+                    st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
+    
+    if st.button("Clear Inputs"):
+        clear_inputs()
 
-            # Show the scores separately
-            st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
-            st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
-            st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
-            
-            # Calculate final score
-            final_score = round(quality_score + relevance_score + trending_score, 2)
-            st.success(f"**Your final resume score is: {final_score} / 100**")
+# Detailed Breakdown Page
+elif page == "Detailed Breakdown":
+    st.title("Detailed Resume Breakdown")
+    file_upload_section()
+    if st.button("Score My Resume"):
+        if not st.session_state.resume_file:
+            st.error("Please upload your resume.")
+        elif not st.session_state.jd_text:
+            st.error("Please provide the job description.")
+        else:
+            quality_score, relevance_score, trending_score = calculate_scores()
+            if quality_score is not None:
+                final_score = round(quality_score + relevance_score + trending_score, 2)
+                st.success(f"**Your final resume score is: {final_score} / 100**")
+                st.write(f"**Content Quality Rating: {round(quality_score, 2)} / 50**")
+                st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
+                st.write(f"**Emerging Skills Index: {round(trending_score, 2)} / 5**")
+                # Provide feedback based on the final score
+                if final_score < 70:
+                    st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+                else:
+                    st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
+        
+    if st.button("Clear Inputs"):
+        clear_inputs()
 
-            # Use session state for the dropdown toggle
-            st.session_state.more_details = st.checkbox(
-                "View Detailed Breakdown", value=st.session_state.more_details
-            )
-            if st.session_state.more_details:
-                show_details()
-                
-            # Provide feedback based on the final score
-            if final_score < 70:
-                st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
-            else:
-                st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
