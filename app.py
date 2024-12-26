@@ -499,8 +499,8 @@ def show_details(resume_text, jd_text):
     import re
 
     # Normalize the texts
-    resume_text_normalized = re.sub(r'[^\w\s]', '', resume_text.lower())
-    jd_text_normalized = re.sub(r'[^\w\s]', '', jd_text.lower())
+    resume_text = re.sub(r'[^\w\s]', '', resume_text.lower())
+    jd_text = re.sub(r'[^\w\s]', '', jd_text.lower())
 
     jd_keywords = set()
     matching_keywords = set()
