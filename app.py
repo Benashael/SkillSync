@@ -456,7 +456,7 @@ def score_trending_skills(resume_text):
     score = len(found_skills) * 0.2  # Each skill adds 1 to the score
     return min(score, 5)  # Cap trending skills score at 5
 
-def show_details(resume_text):
+def show_details(resume_text, jd_text):
     st.write("### Detailed Breakdown of Your Resume Score")
 
     # Display Subcategories in Quality Score Calculation
@@ -637,9 +637,10 @@ elif page == "Detailed Breakdown":
         else:
             # Extract resume text
             resume_text = extract_text(st.session_state.resume_file)
+            jd_text = st.session_state.jd_text
             quality_score, relevance_score, trending_score = calculate_scores()
             if quality_score is not None:
-                show_details(resume_text)
+                show_details(resume_text, jd_text)
                 final_score = round(quality_score + relevance_score + trending_score, 2)
                 st.success(f"**Your final resume score is: {final_score} / 100**")
                 # Provide feedback based on the final score
