@@ -785,14 +785,14 @@ elif page == "Recommendations":
             category_details = CATEGORIES[job_category]
     
             # Display Skills
-            st.write("### Key Skills")
-            st.write(", ".join(category_details["Skills"]))
+            st.write("#### Key Skills")
+            st.text_area", ".join(category_details["Skills"]))
     
             # Display Action Verbs
-            st.write("### Action Verbs")
-            st.write(", ".join(category_details["Action Verbs"]))
+            st.write("#### Action Verbs")
+            st.text_area(", ".join(category_details["Action Verbs"]))
     
             # Display Quantifiers
-            st.write("### Quantifiers")
-            st.write(", ".join(category_details["Quantifiers"]))
+            st.write("#### Quantifiers")
+            st.text_area(", ".join(category_details["Quantifiers"]))
     
