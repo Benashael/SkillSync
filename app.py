@@ -506,28 +506,32 @@ def show_details(resume_text, jd_text):
     matching_keywords = set()
 
     # Match keywords in JD
-    for keyword in KEYWORD_MAPPINGS.keys():
-        if keyword in jd_text_normalized:
-            jd_keywords.add(keyword.upper())  # Store JD keywords in uppercase for display
-
+    for keyword, variations in KEYWORD_MAPPINGS.items():
+        for variation in variations:
+            if variation in jd_text:
+                jd_keywords.add(keyword)  # Add to JD keywords
+    
     # Match keywords in both JD and resume
     for keyword in jd_keywords:
-        variations = KEYWORD_MAPPINGS.get(keyword.lower(), [])  # Safely get variations
-        for variation in variations:
-            if variation in resume_text_normalized:
-                matching_keywords.add(keyword)  # Add matching keyword to the result
+        for variation in KEYWORD_MAPPINGS[keyword]:
+            if variation in resume_text:
+                matching_words.add(keyword)
+    
+    # Calculate relevance score
+    if jd_keywords:  # Avoid division by zero
+        relevance_score = min(len(matching_words) / len(jd_keywords) * 35, 35)
+    elif any(term in jd_text for term in BASE_CATEGORY):  # Check for Base Category terms
+        relevance_score = 25  # JD comes under Base Category
+    else:
+        relevance_score = 0  # No relevant keywords in JD
+    
+    total_score = 10 + relevance_score  # Add base score of 20
 
     # Display Sets
     st.write(f"- **Keywords in Job Description:** {', '.join(jd_keywords)}")
     st.write(f"- **Matching Keywords in Resume:** {', '.join(matching_keywords)}")
 
-    # Calculate relevance score
-    relevance_score = 0
-    if jd_keywords:  # Avoid division by zero
-        relevance_score = min(len(matching_keywords) / len(jd_keywords) * 35, 35)
-
-    total_relevance_score_x = 10 + relevance_score  # Add base score of 10
-    total_relevance_score = min(total_relevance_score_x, 43)
+    total_relevance_score = min(total_score, 43)
     st.write(f"**Total Relevance Score:** {round(total_relevance_score, 2)} / 45")
 
 # Function to extract text from a file
