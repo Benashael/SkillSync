@@ -310,24 +310,111 @@ KEYWORD_MAPPINGS = {
 }
 
 CATEGORIES = {
-    "Data Science": ["Python", "Machine Learning", "Data Analysis", "SQL"],
-    "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
-    "Mobile Development": ["Kotlin", "Swift", "React Native", "Flutter"],
-    "Cybersecurity": ["Network Security", "Penetration Testing", "Risk Assessment", "Cryptography"],
-    "Digital Marketing": ["SEO", "Google Analytics", "Content Marketing", "PPC"],
-    "Product Management": ["Agile", "Scrum", "Roadmap Planning", "Stakeholder Management"],
-    "UI/UX Design": ["Figma", "Sketch", "Wireframing", "Prototyping"],
-    "Cloud Computing": ["AWS", "Azure", "Google Cloud", "DevOps"],
-    "AI/ML Engineering": ["Deep Learning", "NLP", "TensorFlow", "PyTorch"],
-    "Business Analysis": ["Requirements Gathering", "Process Mapping", "Stakeholder Communication"],
-    "Finance": ["Budgeting", "Forecasting", "Financial Modeling", "Risk Analysis"],
-    "Healthcare IT": ["EHR", "HIPAA Compliance", "Medical Imaging", "Telemedicine"],
-    "Game Development": ["Unity", "Unreal Engine", "C#", "3D Modeling"],
-    "E-commerce": ["Shopify", "Magento", "Inventory Management", "Customer Retention"],
-    "Operations Management": ["Six Sigma", "Supply Chain Management", "Logistics", "Lean"],
-    "DevOps": ["Docker", "Kubernetes", "CI/CD", "Jenkins"],
-    "Blockchain": ["Smart Contracts", "Ethereum", "Bitcoin", "Decentralized Apps"],
-    "Quality Assurance": ["Automation Testing", "Manual Testing", "Bug Tracking", "Performance Testing"]
+    "Data Science": {
+        "Skills": ["Python", "Machine Learning", "Data Analysis", "SQL", "Statistics", "Data Visualization", "Big Data"],
+        "Action Verbs": ["Analyzed", "Optimized", "Predicted", "Validated", "Integrated"],
+        "Quantifiers": ["90%", "Millions", "Billions", "10x", "Hundreds"]
+    },
+    "Web Development": {
+        "Skills": ["HTML", "CSS", "JavaScript", "React", "Node.js", "TypeScript", "Webpack", "Bootstrap"],
+        "Action Verbs": ["Developed", "Implemented", "Debugged", "Optimized", "Customized"],
+        "Quantifiers": ["500+", "25%", "Thousands", "Multiple", "15x"]
+    },
+    "Mobile Development": {
+        "Skills": ["Kotlin", "Swift", "React Native", "Flutter", "Java", "Objective-C", "Firebase"],
+        "Action Verbs": ["Built", "Tested", "Designed", "Streamlined", "Published"],
+        "Quantifiers": ["100+", "5x", "Hundreds", "Thousands", "20+"]
+    },
+    "Cybersecurity": {
+        "Skills": ["Network Security", "Penetration Testing", "Risk Assessment", "Cryptography", "SOC Operations", "Firewall Management"],
+        "Action Verbs": ["Protected", "Secured", "Mitigated", "Evaluated", "Prevented"],
+        "Quantifiers": ["95%", "Thousands", "Zero", "Multiple", "Dozens"]
+    },
+    "Digital Marketing": {
+        "Skills": ["SEO", "Google Analytics", "Content Marketing", "PPC", "Social Media Strategy", "Email Campaigns"],
+        "Action Verbs": ["Improved", "Increased", "Promoted", "Managed", "Enhanced"],
+        "Quantifiers": ["300%", "Double", "50%", "Thousands", "Hundreds"]
+    },
+    "Product Management": {
+        "Skills": ["Agile", "Scrum", "Roadmap Planning", "Stakeholder Management", "Market Research", "User Story Writing"],
+        "Action Verbs": ["Led", "Directed", "Coordinated", "Prioritized", "Facilitated"],
+        "Quantifiers": ["Multiple", "5+", "Millions", "Zero", "20%"]
+    },
+    "UI/UX Design": {
+        "Skills": ["Figma", "Sketch", "Wireframing", "Prototyping", "User Research", "Adobe XD", "Accessibility Design"],
+        "Action Verbs": ["Designed", "Prototyped", "Conducted", "Iterated", "Enhanced"],
+        "Quantifiers": ["Dozens", "Thousands", "Multiple", "10+", "15%"]
+    },
+    "Cloud Computing": {
+        "Skills": ["AWS", "Azure", "Google Cloud", "DevOps", "Terraform", "Kubernetes", "Cloud Security"],
+        "Action Verbs": ["Deployed", "Scaled", "Automated", "Orchestrated", "Provisioned"],
+        "Quantifiers": ["Millions", "Hundreds", "Zero", "5x", "50%"]
+    },
+    "AI/ML Engineering": {
+        "Skills": ["Deep Learning", "NLP", "TensorFlow", "PyTorch", "Computer Vision", "Reinforcement Learning"],
+        "Action Verbs": ["Trained", "Developed", "Tested", "Implemented", "Classified"],
+        "Quantifiers": ["Millions", "95%", "Hundreds", "20+", "50x"]
+    },
+    "Business Analysis": {
+        "Skills": ["Requirements Gathering", "Process Mapping", "Stakeholder Communication", "Gap Analysis", "KPI Development"],
+        "Action Verbs": ["Analyzed", "Identified", "Collaborated", "Documented", "Recommended"],
+        "Quantifiers": ["80%", "Dozens", "10x", "Hundreds", "30%"]
+    },
+    "Finance": {
+        "Skills": ["Budgeting", "Forecasting", "Financial Modeling", "Risk Analysis", "Tax Planning", "Portfolio Management"],
+        "Action Verbs": ["Prepared", "Evaluated", "Managed", "Optimized", "Advised"],
+        "Quantifiers": ["Billions", "95%", "50%", "Thousands", "10+"]
+    },
+    "Healthcare IT": {
+        "Skills": ["EHR", "HIPAA Compliance", "Medical Imaging", "Telemedicine", "HL7", "FHIR"],
+        "Action Verbs": ["Implemented", "Developed", "Integrated", "Monitored", "Streamlined"],
+        "Quantifiers": ["100%", "Thousands", "50+", "Zero", "10x"]
+    },
+    "Game Development": {
+        "Skills": ["Unity", "Unreal Engine", "C#", "3D Modeling", "Animation", "Game Physics", "Shader Programming"],
+        "Action Verbs": ["Created", "Designed", "Optimized", "Rendered", "Published"],
+        "Quantifiers": ["Millions", "Thousands", "10x", "5+", "15%"]
+    },
+    "E-commerce": {
+        "Skills": ["Shopify", "Magento", "Inventory Management", "Customer Retention", "Payment Gateways", "Order Fulfillment"],
+        "Action Verbs": ["Managed", "Increased", "Automated", "Enhanced", "Designed"],
+        "Quantifiers": ["300%", "100+", "Thousands", "Multiple", "10%"]
+    },
+    "Operations Management": {
+        "Skills": ["Six Sigma", "Supply Chain Management", "Logistics", "Lean", "Inventory Optimization", "Vendor Management"],
+        "Action Verbs": ["Streamlined", "Reduced", "Improved", "Managed", "Analyzed"],
+        "Quantifiers": ["Zero", "Thousands", "20%", "10x", "50+"]
+    },
+    "DevOps": {
+        "Skills": ["Docker", "Kubernetes", "CI/CD", "Jenkins", "Ansible", "Monitoring"],
+        "Action Verbs": ["Automated", "Deployed", "Integrated", "Configured", "Provisioned"],
+        "Quantifiers": ["95%", "Zero", "Hundreds", "5x", "20+"]
+    },
+    "Blockchain": {
+        "Skills": ["Smart Contracts", "Ethereum", "Bitcoin", "Decentralized Apps", "Solidity", "Consensus Algorithms"],
+        "Action Verbs": ["Developed", "Secured", "Verified", "Deployed", "Integrated"],
+        "Quantifiers": ["Zero", "Millions", "10x", "Multiple", "50%"]
+    },
+    "Quality Assurance": {
+        "Skills": ["Automation Testing", "Manual Testing", "Bug Tracking", "Performance Testing", "Regression Testing"],
+        "Action Verbs": ["Tested", "Debugged", "Validated", "Reported", "Improved"],
+        "Quantifiers": ["Thousands", "Zero", "5x", "100+", "15%"]
+    },
+    "Human Resources": {
+        "Skills": ["Recruitment", "Onboarding", "Employee Engagement", "Conflict Resolution", "Payroll Management"],
+        "Action Verbs": ["Hired", "Coached", "Evaluated", "Trained", "Facilitated"],
+        "Quantifiers": ["500+", "20%", "Multiple", "Hundreds", "10+"]
+    },
+    "Legal Services": {
+        "Skills": ["Contract Drafting", "Legal Research", "Case Management", "Compliance", "Negotiation"],
+        "Action Verbs": ["Advised", "Negotiated", "Reviewed", "Drafted", "Represented"],
+        "Quantifiers": ["Zero", "Dozens", "100+", "5x", "50%"]
+    },
+    "Content Writing": {
+        "Skills": ["Copywriting", "Editing", "SEO Writing", "Creative Writing", "Proofreading"],
+        "Action Verbs": ["Authored", "Edited", "Published", "Researched", "Enhanced"],
+        "Quantifiers": ["Thousands", "Hundreds", "Multiple", "10+", "15%"]
+    },
 }
 
 STRONG_ACTION_VERBS = [
@@ -623,7 +710,7 @@ def calculate_scores():
 
 # Navigation Menu
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Simple Resume Score", "Detailed Breakdown"])
+page = st.sidebar.radio("Go to", ["Home", "Simple Resume Score", "Resume Score with Detailed Breakdown", "Recommendations"])
 
 # Home Page
 if page == "Home":
