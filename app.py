@@ -474,7 +474,7 @@ def show_details(resume_text, jd_text):
 
     # Check strong action verbs (eliminates duplicates)
     action_verb_score = sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
-    
+
     # Check quantifiers (eliminates duplicates)
     quantifier_score = sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
 
@@ -487,50 +487,47 @@ def show_details(resume_text, jd_text):
     else:
         content_score = 5
 
-    # Write the individual scores using st.write
+    # Write the individual scores
     st.write(f"- **Score for Headers:** {round(header_score, 2)}")
     st.write(f"- **Score for Action Verbs:** {round(action_verb_score, 2)}")
     st.write(f"- **Score for Quantifiers:** {round(quantifier_score, 2)}")
     st.write(f"- **Score for Content (Length):** {round(content_score, 2)}")
     st.write(f"**Total Quality Score:** {min(round(header_score + action_verb_score + quantifier_score + content_score, 2), 49)} / 50")
 
-    # **Relevance Score Breakdown**
-    st.write("#### Job Relevance Score Breakdown:")
+    # Relevance Score Calculation
+    st.write("#### Job Relevance Assessment:")
     import re
 
     # Normalize the texts
-    resume_text_clean = re.sub(r'[^\w\s]', '', resume_text.lower())
-    jd_text_clean = re.sub(r'[^\w\s]', '', jd_text.lower())
+    resume_text_normalized = re.sub(r'[^\w\s]', '', resume_text.lower())
+    jd_text_normalized = re.sub(r'[^\w\s]', '', jd_text.lower())
 
-    matching_words = set()
     jd_keywords = set()
+    matching_keywords = set()
 
     # Match keywords in JD
-    for keyword, variations in KEYWORD_MAPPINGS.items():
-        for variation in variations:
-            if variation in jd_text_clean:
-                jd_keywords.add(keyword.upper())  # Store keywords in uppercase for presentation
+    for keyword in KEYWORD_MAPPINGS.keys():
+        if keyword in jd_text_normalized:
+            jd_keywords.add(keyword.upper())  # Store JD keywords in uppercase for display
 
     # Match keywords in both JD and resume
     for keyword in jd_keywords:
-        for variation in KEYWORD_MAPPINGS[keyword.lower()]:
-            if variation in resume_text_clean:
-                matching_words.add(keyword)
+        variations = KEYWORD_MAPPINGS.get(keyword.lower(), [])  # Safely get variations
+        for variation in variations:
+            if variation in resume_text_normalized:
+                matching_keywords.add(keyword)  # Add matching keyword to the result
 
-    # Display the sets
-    st.write(f"- **Keywords in Job Description:** {', '.join(sorted(jd_keywords))}")
-    st.write(f"- **Keywords in Resume:** {', '.join(sorted(set(k.upper() for k in resume_text_clean.split())))}")
-    st.write(f"- **Matching Keywords:** {', '.join(sorted(matching_words))}")
+    # Display Sets
+    st.write(f"- **Keywords in Job Description:** {', '.join(jd_keywords)}")
+    st.write(f"- **Matching Keywords in Resume:** {', '.join(matching_keywords)}")
 
     # Calculate relevance score
+    relevance_score = 0
     if jd_keywords:  # Avoid division by zero
-        relevance_score = min(len(matching_words) / len(jd_keywords) * 35, 35)
-    elif any(term in jd_text_clean for term in BASE_CATEGORY):  # Check for Base Category terms
-        relevance_score = 25  # JD comes under Base Category
-    else:
-        relevance_score = 0  # No relevant keywords in JD
+        relevance_score = min(len(matching_keywords) / len(jd_keywords) * 35, 35)
 
-    total_relevance_score = min(10 + relevance_score, 43)  # Add base score and cap
+    total_relevance_score_x = 10 + relevance_score  # Add base score of 10
+    total_relevance_score = min(total_relevance_score_x, 43)
     st.write(f"**Total Relevance Score:** {round(total_relevance_score, 2)} / 45")
 
 # Function to extract text from a file
