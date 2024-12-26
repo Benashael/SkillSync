@@ -515,11 +515,11 @@ def show_details(resume_text, jd_text):
     for keyword in jd_keywords:
         for variation in KEYWORD_MAPPINGS[keyword]:
             if variation in resume_text:
-                matching_words.add(keyword)
+                matching_keywords.add(keyword)
     
     # Calculate relevance score
     if jd_keywords:  # Avoid division by zero
-        relevance_score = min(len(matching_words) / len(jd_keywords) * 35, 35)
+        relevance_score = min(len(matching_keywords) / len(jd_keywords) * 35, 35)
     elif any(term in jd_text for term in BASE_CATEGORY):  # Check for Base Category terms
         relevance_score = 25  # JD comes under Base Category
     else:
