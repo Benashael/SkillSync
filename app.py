@@ -597,6 +597,8 @@ elif page == "Detailed Breakdown":
         elif not st.session_state.jd_text:
             st.error("Please provide the job description.")
         else:
+            # Extract resume text
+            resume_text = extract_text(st.session_state.resume_file)
             quality_score, relevance_score, trending_score = calculate_scores()
             if quality_score is not None:
                 show_details(resume_text)
