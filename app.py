@@ -744,7 +744,7 @@ elif page == "Simple Resume Score":
         clear_inputs()
 
 # Detailed Breakdown Page
-elif page == "Detailed Breakdown":
+elif page == "Resume Score with Detailed Breakdown":
     st.title("Detailed Resume Breakdown")
     file_upload_section()
     if st.button("Score My Resume"):
