@@ -466,17 +466,29 @@ def show_details(resume_text, jd_text):
     quantifier_score = 0
     content_score = 0
 
+    # Store matched headers, action verbs, and quantifiers
+    matched_headers = set()
+    matched_action_verbs = set()
+    matched_quantifiers = set()
+    
     # Check headers
     headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
     for header in headers:
         if header in resume_text.lower():
             header_score += 2  # Assign points for each proper header
+            matched_headers.add(header)  # Store the matched header
 
     # Check strong action verbs (eliminates duplicates)
-    action_verb_score = sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
+    for verb in set(STRONG_ACTION_VERBS):
+        if verb.lower() in resume_text.lower():
+            action_verb_score += 2
+            matched_action_verbs.add(verb)  # Store the matched verb
 
     # Check quantifiers (eliminates duplicates)
-    quantifier_score = sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
+    for quantifier in set(QUANTIFIERS):
+        if quantifier.lower() in resume_text.lower():
+            quantifier_score += 2
+            matched_quantifiers.add(quantifier)  # Store the matched quantifier
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
@@ -488,14 +500,17 @@ def show_details(resume_text, jd_text):
         content_score = 5
 
     # Write the individual scores
+    st.write(f"- **Matched Headers:** {', '.join(matched_headers).upper()}")  # Display matched headers
     st.write(f"- **Score for Headers:** {round(header_score, 2)}")
+    st.write(f"- **Matched Action Verbs:** {', '.join(matched_action_verbs).upper()}")  # Display matched verbs
     st.write(f"- **Score for Action Verbs:** {round(action_verb_score, 2)}")
+    st.write(f"- **Matched Quantifiers:** {', '.join(matched_quantifiers).upper()}")  # Display matched quantifiers
     st.write(f"- **Score for Quantifiers:** {round(quantifier_score, 2)}")
     st.write(f"- **Score for Content (Length):** {round(content_score, 2)}")
     st.write(f"**Total Quality Score:** {min(round(header_score + action_verb_score + quantifier_score + content_score, 2), 49)} / 50")
 
     # Relevance Score Calculation
-    st.write("#### Job Relevance Assessment:")
+    st.write("#### Job Relevance Assessment - Subcategories:")
     import re
 
     # Normalize the texts
