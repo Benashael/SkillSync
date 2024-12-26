@@ -786,7 +786,7 @@ elif page == "Recommendations":
     
             # Display Skills
             st.write("#### Key Skills")
-            st.text_area", ".join(category_details["Skills"]))
+            st.text_area(", ".join(category_details["Skills"]))
     
             # Display Action Verbs
             st.write("#### Action Verbs")
