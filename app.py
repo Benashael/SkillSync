@@ -3,6 +3,10 @@ import docx2txt
 from PyPDF2 import PdfReader
 from langdetect import detect
 
+# Set up Streamlit app
+st.set_page_config(page_title="SkillSync", page_icon="🛠️", layout="wide")
+st.title("🛠️ SkillSync: Your Resume & Career Companion 💼")
+
 # Mapped terms for short forms
 KEYWORD_MAPPINGS = {
     "Machine Learning": ["ML", "machine learning", "machine learnin", "m/l", "machine-learning", "ml algorithms"],
