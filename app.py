@@ -548,10 +548,10 @@ def score_trending_skills(resume_text):
     return min(score, 5)  # Cap trending skills score at 5
 
 def show_details(resume_text, jd_text):
-    st.write("### Detailed Breakdown of Your Resume Score")
+    st.write("### 🔍 Detailed Breakdown of Your Resume Score")
 
     # Display Subcategories in Quality Score Calculation
-    st.write("#### Content Quality Rating - Subcategories:")
+    st.write("#### 📋 Content Quality Rating - Subcategories:")
     header_score = 0
     action_verb_score = 0
     quantifier_score = 0
@@ -601,7 +601,7 @@ def show_details(resume_text, jd_text):
     st.write(f"**Total Quality Score:** {min(round(header_score + action_verb_score + quantifier_score + content_score, 2), 49)} / 50")
 
     # Relevance Score Calculation
-    st.write("#### Job Relevance Assessment - Subcategories:")
+    st.write("#### 📊 Job Relevance Assessment - Subcategories:")
     import re
 
     # Normalize the texts
@@ -640,7 +640,7 @@ def show_details(resume_text, jd_text):
     total_relevance_score = min(total_score, 43)
     st.write(f"**Total Relevance Score:** {round(total_relevance_score, 2)} / 45")
 
-    st.write("#### Emerging Skills Index - Subcategories:")
+    st.write("#### 🚀 Emerging Skills Index - Subcategories:")
      # Create a set to track skills found in the resume (avoiding duplicates)
     found_skills = set()
 
@@ -713,23 +713,24 @@ def calculate_scores():
     return quality_score, relevance_score, trending_score
 
 # Navigation Menu
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Simple Resume Score", "Resume Score with Detailed Breakdown", "Recommendations"])
+st.sidebar.title("📱 Navigation")
+page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resume Score 📝", "Resume Score with Detailed Breakdown 📊", "Recommendations 💡"])
 
 # Home Page
-if page == "Home":
-    st.title("Welcome to the Resume Scoring Application")
+if page == "Home 🏠":
+    st.header("Welcome to the Resume Scoring Application")
     st.write("Navigate using the sidebar to score your resume or get a detailed breakdown.")
 
 # Simple Resume Score Page
-elif page == "Simple Resume Score":
-    st.title("Simple Resume Score")
+elif page == "Simple Resume Score 📝":
+    st.header("📝 Simple Resume Score")
     file_upload_section()
-    if st.button("Score My Resume"):
+
+    if st.button("⚡ Score My Resume"):
         if not st.session_state.resume_file:
-            st.error("Please upload your resume.")
+            st.error("🚨 Please upload your resume.")
         elif not st.session_state.jd_text:
-            st.error("Please provide the job description.")
+            st.error("🚨 Please provide the job description.")
         else:
             quality_score, relevance_score, trending_score = calculate_scores()
             if quality_score is not None:
@@ -737,25 +738,25 @@ elif page == "Simple Resume Score":
                 st.write(f"**Job Relevance Assessment: {round(relevance_score, 2)} / 45**")
                 st.write(f"**Emerging Skills Index: {trending_score} / 5**")
                 final_score = round(quality_score + relevance_score + trending_score, 2)
-                st.success(f"**Your final resume score is: {final_score} / 100**")
+                st.success(f"🎯 **Your final resume score is: {final_score} / 100**")
                 # Provide feedback based on the final score
                 if final_score < 70:
-                    st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+                    st.info("🔴 Aim for a score of 70% or higher for better alignment with the job requirements.")
                 else:
-                    st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
+                    st.success("✅ Great job! Your resume aligns well with the job requirements. Keep it up!")
     
-    if st.button("Clear Inputs"):
+    if st.button("🧹 Clear Inputs"):
         clear_inputs()
 
 # Detailed Breakdown Page
-elif page == "Resume Score with Detailed Breakdown":
-    st.title("Detailed Resume Breakdown")
+elif page == "Resume Score with Detailed Breakdown 📊":
+    st.header("📊 Detailed Resume Breakdown")
     file_upload_section()
-    if st.button("Score My Resume"):
+    if st.button("⚡ Score My Resume"):
         if not st.session_state.resume_file:
-            st.error("Please upload your resume.")
+            st.error("🚨 Please upload your resume.")
         elif not st.session_state.jd_text:
-            st.error("Please provide the job description.")
+            st.error("🚨 Please provide the job description.")
         else:
             # Extract resume text
             resume_text = extract_text(st.session_state.resume_file)
@@ -764,39 +765,40 @@ elif page == "Resume Score with Detailed Breakdown":
             if quality_score is not None:
                 show_details(resume_text, jd_text)
                 final_score = round(quality_score + relevance_score + trending_score, 2)
-                st.success(f"**Your final resume score is: {final_score} / 100**")
+                st.success(f"🎯 **Your final resume score is: {final_score} / 100**")
                 # Provide feedback based on the final score
                 if final_score < 70:
-                    st.info("Aim for a score of 70% or higher for better alignment with the job requirements.")
+                    st.info("🔴 Aim for a score of 70% or higher for better alignment with the job requirements.")
                 else:
-                    st.success("Great job! Your resume aligns well with the job requirements. Keep it up!")
+                    st.success("✅ Great job! Your resume aligns well with the job requirements. Keep it up!")
         
-    if st.button("Clear Inputs"):
+    if st.button("🧹 Clear Inputs"):
         clear_inputs()
 
 # Recommendations Page
-elif page == "Recommendations":
-    st.title("Job Recommendations")
+elif page == "Recommendations 💡":
+    st.header("💡 Job Recommendations")
     st.write("Select a job category to get relevant skills, action verbs, and quantifiers to improve your resume.")
 
     # Job Category Selection
-    job_category = st.selectbox("Choose a Job Category", options=list(CATEGORIES.keys()))
+    job_category = st.selectbox("🔍 Choose a Job Category", options=list(CATEGORIES.keys()))
 
-    if st.button("Get Recommendations"):
+    if st.button("📈 Get Recommendations"):
         if job_category:
-            st.subheader(f"Recommendations for {job_category}")
+            st.subheader(f"🔑 Recommendations for {job_category}")
             
             category_details = CATEGORIES[job_category]
     
             # Display Skills
-            st.write("#### Key Skills")
+            st.write("#### 🛠️ Key Skills")
             st.text_area("Skills", ", ".join(category_details["Skills"]), height=100)
     
             # Display Action Verbs
-            st.write("#### Action Verbs")
+            st.write("#### 💪 Action Verbs")
             st.text_area("Action Verbs", ", ".join(category_details["Action Verbs"]), height=100)
     
             # Display Quantifiers
-            st.write("#### Quantifiers")
+            st.write("#### 📊 Quantifiers")
             st.text_area("Quantifiers", ", ".join(category_details["Quantifiers"]), height=100)
+
     
