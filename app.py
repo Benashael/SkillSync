@@ -543,12 +543,27 @@ def show_details(resume_text, jd_text):
     total_score = 10 + relevance_score  # Add base score of 20
 
     # Display Sets
-    st.write(f"- **Keywords in Job Description:** {', '.join(jd_keywords)}")
-    st.write(f"- **Matching Keywords in Resume:** {', '.join(matching_keywords)}")
+    st.write(f"- **Keywords in Job Description:** {', '.join(jd_keywords).upper()}")
+    st.write(f"- **Matching Keywords in Resume:** {', '.join(matching_keywords).upper()}")
 
     total_relevance_score = min(total_score, 43)
     st.write(f"**Total Relevance Score:** {round(total_relevance_score, 2)} / 45")
 
+    st.write("#### Emerging Skills Index - Subcategories:")
+     # Create a set to track skills found in the resume (avoiding duplicates)
+    found_skills = set()
+
+    # Check each skill in the trending skills list
+    for skill in TRENDING_SKILLS:
+        if skill.lower() in resume_text_lower:
+            found_skills.add(skill.lower())  # Add to set to avoid duplicates
+
+    # Calculate the score based on the number of unique skills found
+    score = len(found_skills) * 0.2  # Each skill adds 1 to the score
+    total_skills_score = min(score, 5)
+    st.write(f"- **Emerging Skills in Resume:** {', '.join(found_skills).upper()}")
+    st.write(f"**Total Score for Emerging Skills:** {round(total_skills_score, 2)} / 5")
+    
 # Function to extract text from a file
 def extract_text(file):
     try:
