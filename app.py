@@ -778,20 +778,21 @@ elif page == "Recommendations":
     # Job Category Selection
     job_category = st.selectbox("Choose a Job Category", options=list(CATEGORIES.keys()))
 
-    if job_category:
-        st.subheader(f"Recommendations for {job_category}")
-        
-        category_details = CATEGORIES[job_category]
-
-        # Display Skills
-        st.write("### Key Skills")
-        st.write(", ".join(category_details["Skills"]))
-
-        # Display Action Verbs
-        st.write("### Action Verbs")
-        st.write(", ".join(category_details["Action Verbs"]))
-
-        # Display Quantifiers
-        st.write("### Quantifiers")
-        st.write(", ".join(category_details["Quantifiers"]))
-
+    if st.button("Get Recommendations"):
+        if job_category:
+            st.subheader(f"Recommendations for {job_category}")
+            
+            category_details = CATEGORIES[job_category]
+    
+            # Display Skills
+            st.write("### Key Skills")
+            st.write(", ".join(category_details["Skills"]))
+    
+            # Display Action Verbs
+            st.write("### Action Verbs")
+            st.write(", ".join(category_details["Action Verbs"]))
+    
+            # Display Quantifiers
+            st.write("### Quantifiers")
+            st.write(", ".join(category_details["Quantifiers"]))
+    
