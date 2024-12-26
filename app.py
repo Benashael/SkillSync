@@ -718,8 +718,69 @@ page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resum
 
 # Home Page
 if page == "Home 🏠":
-    st.header("Welcome to the Resume Scoring Application")
-    st.write("Navigate using the sidebar to score your resume or get a detailed breakdown.")
+    st.header("Welcome to the Resume Score and Recommendation Tool!")
+    
+    st.write("""
+    Maximize your chances of landing the perfect job with our comprehensive resume evaluation tool. 
+    Whether you're looking for a simple score, a detailed breakdown of your resume's strengths and weaknesses, 
+    or tailored recommendations for improving your resume, we've got you covered!
+    """)
+
+    # Simple Resume Score Section
+    st.subheader("1. Simple Resume Score 📝")
+    st.write("""
+    Looking for a quick assessment? Our **Simple Resume Score** feature provides a quick and straightforward evaluation of your resume. 
+    All you need to do is upload your resume and job description, and you'll receive a **score out of 100** based on how well your resume aligns with the job you're applying for. 
+    This is perfect for those who want a quick overview of their resume quality and job relevance.
+    """)
+
+    st.write("🔹 **Features**:")
+    st.write("""
+    - Provides an overall score of your resume (out of 100).
+    - Simple and fast process with no detailed breakdown.
+    """)
+
+    # Resume Score with Detailed Breakdown Section
+    st.subheader("2. Resume Score with Detailed Breakdown 📊")
+    st.write("""
+    For a more in-depth analysis of your resume, the **Resume Score with Detailed Breakdown** feature offers an extensive evaluation. 
+    This breakdown goes beyond the score and gives you detailed insights into various aspects of your resume. The breakdown includes:
+    - **Content Quality Rating**: An evaluation of headers, action verbs, quantifiers, and content length.
+    - **Job Relevance Assessment**: How well your resume matches the job description.
+    - **Emerging Skills Index**: A measure of how well your resume showcases trending skills in your field.
+    """)
+
+    st.write("🔹 **Features**:")
+    st.write("""
+    - Detailed insights into your resume's strengths and areas for improvement.
+    - Breakdown of content quality, job relevance, and trending skills.
+    - Actionable feedback for improving your resume.
+    """)
+
+    # Recommendations Section
+    st.subheader("3. Recommendations 💡")
+    st.write("""
+    Want to enhance your resume even further? The **Recommendations** feature provides you with personalized recommendations based on the job category you choose. 
+    By selecting a job category, you'll receive:
+    - **Key Skills**: Essential skills required for the role.
+    - **Action Verbs**: Powerful action verbs to use in your resume.
+    - **Quantifiers**: Quantitative terms that can make your achievements stand out.
+    """)
+
+    st.write("🔹 **Features**:")
+    st.write("""
+    - Recommendations based on job category.
+    - Provides key skills, action verbs, and quantifiers to enhance your resume.
+    - Helps you tailor your resume to meet the expectations of the industry.
+    """)
+
+    # Encourage user to explore the tool
+    st.write("""
+    With these three powerful tools, you can take your resume to the next level. Whether you're just starting out or looking to refine your existing resume, 
+    we offer the tools you need to stand out to employers!
+    """)
+
+    st.write("Get started now by selecting a feature from the navigation bar!")
 
 # Simple Resume Score Page
 elif page == "Simple Resume Score 📝":
