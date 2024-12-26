@@ -555,7 +555,7 @@ def show_details(resume_text, jd_text):
 
     # Check each skill in the trending skills list
     for skill in TRENDING_SKILLS:
-        if skill.lower() in resume_text_lower:
+        if skill.lower() in resume_text:
             found_skills.add(skill.lower())  # Add to set to avoid duplicates
 
     # Calculate the score based on the number of unique skills found
