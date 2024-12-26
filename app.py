@@ -488,12 +488,50 @@ def show_details(resume_text):
         content_score = 5
 
     # Write the individual scores using st.write
-    st.write("### Detailed Quality Score Breakdown:")
     st.write(f"- **Score for Headers:** {round(header_score, 2)}")
     st.write(f"- **Score for Action Verbs:** {round(action_verb_score, 2)}")
     st.write(f"- **Score for Quantifiers:** {round(quantifier_score, 2)}")
     st.write(f"- **Score for Content (Length):** {round(content_score, 2)}")
     st.write(f"**Total Quality Score:** {min(round(header_score + action_verb_score + quantifier_score + content_score, 2), 49)} / 50")
+
+    # **Relevance Score Breakdown**
+    st.write("#### Job Relevance Score Breakdown:")
+    import re
+
+    # Normalize the texts
+    resume_text_clean = re.sub(r'[^\w\s]', '', resume_text.lower())
+    jd_text_clean = re.sub(r'[^\w\s]', '', jd_text.lower())
+
+    matching_words = set()
+    jd_keywords = set()
+
+    # Match keywords in JD
+    for keyword, variations in KEYWORD_MAPPINGS.items():
+        for variation in variations:
+            if variation in jd_text_clean:
+                jd_keywords.add(keyword.upper())  # Store keywords in uppercase for presentation
+
+    # Match keywords in both JD and resume
+    for keyword in jd_keywords:
+        for variation in KEYWORD_MAPPINGS[keyword.lower()]:
+            if variation in resume_text_clean:
+                matching_words.add(keyword)
+
+    # Display the sets
+    st.write(f"- **Keywords in Job Description:** {', '.join(sorted(jd_keywords))}")
+    st.write(f"- **Keywords in Resume:** {', '.join(sorted(set(k.upper() for k in resume_text_clean.split())))}")
+    st.write(f"- **Matching Keywords:** {', '.join(sorted(matching_words))}")
+
+    # Calculate relevance score
+    if jd_keywords:  # Avoid division by zero
+        relevance_score = min(len(matching_words) / len(jd_keywords) * 35, 35)
+    elif any(term in jd_text_clean for term in BASE_CATEGORY):  # Check for Base Category terms
+        relevance_score = 25  # JD comes under Base Category
+    else:
+        relevance_score = 0  # No relevant keywords in JD
+
+    total_relevance_score = min(10 + relevance_score, 43)  # Add base score and cap
+    st.write(f"**Total Relevance Score:** {round(total_relevance_score, 2)} / 45")
 
 # Function to extract text from a file
 def extract_text(file):
