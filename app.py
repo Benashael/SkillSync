@@ -786,13 +786,13 @@ elif page == "Recommendations":
     
             # Display Skills
             st.write("#### Key Skills")
-            st.text_area(", ".join(category_details["Skills"]))
+            st.text_area("Skills", ", ".join(category_details["Skills"]), height=100)
     
             # Display Action Verbs
             st.write("#### Action Verbs")
-            st.text_area(", ".join(category_details["Action Verbs"]))
+            st.text_area("Action Verbs", ", ".join(category_details["Action Verbs"]), height=100)
     
             # Display Quantifiers
             st.write("#### Quantifiers")
-            st.text_area(", ".join(category_details["Quantifiers"]))
+            st.text_area("Quantifiers", ", ".join(category_details["Quantifiers"]), height=100)
     
