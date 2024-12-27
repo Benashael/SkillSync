@@ -743,13 +743,13 @@ def file_upload_section():
     # Resume input method
     st.radio("How would you like to provide your Resume?", ["Upload File", "Paste Text"], key="resume_input_method")
     if st.session_state.resume_input_method == "Upload File":
-        st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
-        if st.session_state.resume_file:
-            st.session_state.resume_text = extract_text(st.session_state.resume_file)
-            if not st.session_state.resume_text:
+        resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+        if resume_file:
+            st.session_state.resume_file = extract_text(st.session_state.resume_file)
+            if not st.session_state.resume_file:
                 st.error("Unable to extract text from the resume. Ensure it's a valid and supported file format (PDF, DOCX, TXT).")
     else:
-        st.session_state.resume_text = st.text_area("Paste your Resume:").strip()
+        st.session_state.resume_file = st.text_area("Paste your Resume:").strip()
     
     # JD input method
     st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
