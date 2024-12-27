@@ -2,6 +2,8 @@ import streamlit as st
 import docx2txt
 from PyPDF2 import PdfReader
 from langdetect import detect
+import io
+from docx import Document
 
 # Set up Streamlit app
 st.set_page_config(page_title="SkillSync", page_icon="🛠️", layout="wide")
