@@ -734,7 +734,7 @@ def clear_inputs():
     st.session_state.pop("resume_file", None)
     st.session_state.pop("resume_text", None)
     st.session_state.pop("jd_file", None)
-     st.session_state.pop("jd_text", None)
+    st.session_state.pop("jd_text", None)
     st.session_state.resume_file = None
     st.session_state.jd_text = None
     st.session_state.more_details = False
