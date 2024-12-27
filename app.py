@@ -708,7 +708,7 @@ def calculate_scores():
         return None, None, None
     
     quality_score = score_quality(resume_text)
-    relevance_score = score_relevance(resume_text, st.session_state.jd_text)
+    relevance_score = score_relevance(resume_text, st.session_state.jd_text) 
     trending_score = score_trending_skills(resume_text)
     return quality_score, relevance_score, trending_score
 
