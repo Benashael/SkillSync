@@ -702,10 +702,6 @@ if "jd_text" not in st.session_state:
 if "more_details" not in st.session_state:
     st.session_state.more_details = False
 
-import streamlit as st
-from PyPDF2 import PdfReader
-import docx2txt
-
 # Function to extract text from a file
 def extract_text(file):
     try:
