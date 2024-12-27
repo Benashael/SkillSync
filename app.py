@@ -731,8 +731,10 @@ if "more_details" not in st.session_state:
 
 # Shared Function: Clear Inputs
 def clear_inputs():
-    st.session_state.pop("resume_input_method", None)
-    st.session_state.pop("jd_input_method", None)
+    st.session_state.pop("resume_file", None)
+    st.session_state.pop("resume_text", None)
+    st.session_state.pop("jd_file", None)
+     st.session_state.pop("jd_text", None)
     st.session_state.resume_file = None
     st.session_state.jd_text = None
     st.session_state.more_details = False
