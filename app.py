@@ -714,6 +714,10 @@ def extract_text(file):
         elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             text = docx2txt.process(file)
 
+        # Handle TXT files
+        elif file.type == "text/plain":
+            text = file.read().decode("utf-8")  # Decode binary content for .txt files
+
         # Unsupported file type
         else:
             return None
