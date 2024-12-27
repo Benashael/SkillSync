@@ -671,6 +671,30 @@ def extract_text(file):
     except Exception as e:
         return None
 
+# Function: Generate Sample JD and Resume
+def generate_sample_files():
+    sample_jd = """Software Engineer Job Description:
+- Proficient in Python, Java, or similar programming languages
+- Hands-on experience with web frameworks like Django or Flask
+- Ability to design and maintain APIs
+- Familiarity with cloud platforms such as AWS or Azure
+- Excellent problem-solving and communication skills"""
+    
+    sample_resume = """John Doe
+Contact: johndoe@example.com | LinkedIn: linkedin.com/in/johndoe | GitHub: github.com/johndoe
+Summary:
+Experienced Software Engineer with a proven track record of developing scalable web applications.
+Skills:
+- Programming: Python, Java, SQL
+- Web Frameworks: Django, Flask
+- Cloud: AWS, Azure
+Experience:
+Software Engineer, TechCorp (2020–Present)
+- Developed RESTful APIs for client-facing applications.
+- Migrated legacy systems to cloud platforms, increasing system reliability by 30%.
+Education:
+Bachelor of Technology in Computer Science, XYZ University (2016–2020)"""
+
 # Initialize session state
 if "resume_file" not in st.session_state:
     st.session_state.resume_file = None
@@ -931,3 +955,23 @@ elif page == "Sample JD and Resume 📄":
     - Match your resume content to reflect the skills and responsibilities mentioned in the JD.
     - Ensure your resume highlights relevant experience and quantifiable achievements.
     """)
+
+    # Generate and provide download links
+    jd_file_path, resume_file_path = generate_sample_files()
+
+    # Add download buttons
+    with open(jd_file_path, "rb") as jd_file:
+        st.download_button(
+            label="📥 Download Sample JD",
+            data=jd_file,
+            file_name="sample_jd.txt",
+            mime="text/plain",
+        )
+
+    with open(resume_file_path, "rb") as resume_file:
+        st.download_button(
+            label="📥 Download Sample Resume",
+            data=resume_file,
+            file_name="sample_resume.txt",
+            mime="text/plain",
+        )
