@@ -714,10 +714,6 @@ def extract_text(file):
         elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             text = docx2txt.process(file)
 
-        # Handle TXT files
-        elif file.type == "text/plain":
-            text = file.read().decode("utf-8")  # Decode binary content for .txt files
-
         # Unsupported file type
         else:
             return None
@@ -747,16 +743,12 @@ def clear_inputs():
 
 # Function for File Upload Section
 def file_upload_section():
-    # Resume input method
-    st.radio("How would you like to provide your Resume?", ["Upload File", "Paste Text"], key="resume_input_method")
-    if st.session_state.resume_input_method == "Upload File":
-        st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
-        if st.session_state.resume_file:
-            st.session_state.resume_text = extract_text(st.session_state.resume_file)
-            if not st.session_state.resume_text:
-                st.error("Unable to extract text from the resume. Ensure it's a valid and supported file format (PDF, DOCX, TXT).")
-    else:
-        st.session_state.resume_text = st.text_area("Paste your Resume:").strip()
+    # Resume upload section (only PDF and DOCX allowed)
+    st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX only):", type=["pdf", "docx"])
+    if st.session_state.resume_file:
+        st.session_state.resume_text = extract_text(st.session_state.resume_file)
+        if not st.session_state.resume_text:
+            st.error("Unable to extract text from the resume. Ensure it's a valid and supported file format (PDF, DOCX).")
 
     # JD input method
     st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
@@ -769,7 +761,6 @@ def file_upload_section():
     else:
         st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
 
-
 # Function: Resume Scoring Logic
 def calculate_scores():
     # Ensure text extraction for resume and job description
@@ -777,11 +768,11 @@ def calculate_scores():
     if not resume_text:
         st.error("Unable to extract text from the resume. Ensure the format is correct.")
         return None, None, None
-    
+
     if detect(resume_text) != "en" or detect(st.session_state.jd_text) != "en":
         st.error("Both the resume and job description must be in English.")
         return None, None, None
-    
+
     quality_score = score_quality(resume_text)
     relevance_score = score_relevance(resume_text, st.session_state.jd_text)
     trending_score = score_trending_skills(resume_text)
