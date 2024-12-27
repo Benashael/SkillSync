@@ -746,7 +746,7 @@ def clear_inputs():
     
     # If using Streamlit UI components that are dependent on the session state,
     # reset the UI elements (like file uploaders or text areas) as well
-    # st.experimental_rerun()  # Re-renders the app and resets UI components
+    st.experimental_rerun()  # Re-renders the app and resets UI components
 
 def file_upload_section():
     # Resume input method
