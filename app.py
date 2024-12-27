@@ -695,6 +695,14 @@ Software Engineer, TechCorp (2020–Present)
 Education:
 Bachelor of Technology in Computer Science, XYZ University (2016–2020)"""
 
+    # Save sample files as .txt
+    with open("sample_jd.txt", "w") as f:
+        f.write(sample_jd)
+    with open("sample_resume.txt", "w") as f:
+        f.write(sample_resume)
+
+    return "sample_jd.txt", "sample_resume.txt"
+
 # Initialize session state
 if "resume_file" not in st.session_state:
     st.session_state.resume_file = None
