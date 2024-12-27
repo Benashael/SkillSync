@@ -660,33 +660,6 @@ def show_details(resume_text, jd_text):
     st.write(f"- **Emerging Skills in Resume:** {', '.join(found_skills).upper()}")
     st.write(f"**Total Score for Emerging Skills:** {round(total_skills_score, 2)} / 5")
     
-def extract_text(file):
-    try:
-        # Handle PDF files
-        if file.type == "application/pdf":
-            reader = PdfReader(file)
-            text = " ".join(page.extract_text() for page in reader.pages if page.extract_text())
-
-        # Handle DOCX files
-        elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            text = docx2txt.process(file)
-
-        # Handle TXT files
-        elif file.type == "text/plain":
-            text = file.read().decode("utf-8")  # Decode binary content for .txt files
-
-        # Unsupported file type
-        else:
-            return None
-        
-        # Return the extracted text after stripping any leading or trailing spaces
-        return text.strip() if text else None
-
-    except Exception as e:
-        # Log or print the error if needed for debugging
-        print(f"Error extracting text: {e}")
-        return None
-
 # Function: Generate Sample JD and Resume
 def generate_sample_files():
     sample_jd = """Software Engineer Job Description:
@@ -729,6 +702,38 @@ if "jd_text" not in st.session_state:
 if "more_details" not in st.session_state:
     st.session_state.more_details = False
 
+import streamlit as st
+from PyPDF2 import PdfReader
+import docx2txt
+
+# Function to extract text from a file
+def extract_text(file):
+    try:
+        # Handle PDF files
+        if file.type == "application/pdf":
+            reader = PdfReader(file)
+            text = " ".join(page.extract_text() for page in reader.pages if page.extract_text())
+
+        # Handle DOCX files
+        elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            text = docx2txt.process(file)
+
+        # Handle TXT files
+        elif file.type == "text/plain":
+            text = file.read().decode("utf-8")  # Decode binary content for .txt files
+
+        # Unsupported file type
+        else:
+            return None
+        
+        # Return the extracted text after stripping any leading or trailing spaces
+        return text.strip() if text else None
+
+    except Exception as e:
+        # Log or print the error if needed for debugging
+        print(f"Error extracting text: {e}")
+        return None
+
 # Shared Function: Clear Inputs
 def clear_inputs():
     # Remove variables from session state
@@ -743,11 +748,8 @@ def clear_inputs():
     st.session_state.jd_file = None
     st.session_state.jd_text = None
     st.session_state.more_details = False
-    
-    # If using Streamlit UI components that are dependent on the session state,
-    # reset the UI elements (like file uploaders or text areas) as well
-    # st.experimental_rerun()  # Re-renders the app and resets UI components
 
+# Function for File Upload Section
 def file_upload_section():
     # Resume input method
     st.radio("How would you like to provide your Resume?", ["Upload File", "Paste Text"], key="resume_input_method")
@@ -759,7 +761,7 @@ def file_upload_section():
                 st.error("Unable to extract text from the resume. Ensure it's a valid and supported file format (PDF, DOCX, TXT).")
     else:
         st.session_state.resume_text = st.text_area("Paste your Resume:").strip()
-    
+
     # JD input method
     st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
     if st.session_state.jd_input_method == "Upload File":
@@ -771,18 +773,21 @@ def file_upload_section():
     else:
         st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
 
+
 # Function: Resume Scoring Logic
 def calculate_scores():
-    resume_text = extract_text(st.session_state.resume_file)
+    # Ensure text extraction for resume and job description
+    resume_text = extract_text(st.session_state.resume_file) if st.session_state.resume_file else st.session_state.resume_text
     if not resume_text:
         st.error("Unable to extract text from the resume. Ensure the format is correct.")
         return None, None, None
+    
     if detect(resume_text) != "en" or detect(st.session_state.jd_text) != "en":
         st.error("Both the resume and job description must be in English.")
         return None, None, None
     
     quality_score = score_quality(resume_text)
-    relevance_score = score_relevance(resume_text, st.session_state.jd_text) 
+    relevance_score = score_relevance(resume_text, st.session_state.jd_text)
     trending_score = score_trending_skills(resume_text)
     return quality_score, relevance_score, trending_score
 
