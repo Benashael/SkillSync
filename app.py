@@ -655,20 +655,31 @@ def show_details(resume_text, jd_text):
     st.write(f"- **Emerging Skills in Resume:** {', '.join(found_skills).upper()}")
     st.write(f"**Total Score for Emerging Skills:** {round(total_skills_score, 2)} / 5")
     
-# Function to extract text from a file
 def extract_text(file):
     try:
+        # Handle PDF files
         if file.type == "application/pdf":
             reader = PdfReader(file)
-            text = " ".join(page.extract_text() for page in reader.pages)
+            text = " ".join(page.extract_text() for page in reader.pages if page.extract_text())
+
+        # Handle DOCX files
         elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             text = docx2txt.process(file)
+
+        # Handle TXT files
         elif file.type == "text/plain":
-            text = file.read().decode("utf-8")
+            text = file.read().decode("utf-8")  # Decode binary content for .txt files
+
+        # Unsupported file type
         else:
             return None
-        return text.strip()
+        
+        # Return the extracted text after stripping any leading or trailing spaces
+        return text.strip() if text else None
+
     except Exception as e:
+        # Log or print the error if needed for debugging
+        print(f"Error extracting text: {e}")
         return None
 
 # Function: Generate Sample JD and Resume
@@ -719,35 +730,26 @@ def clear_inputs():
     st.session_state.jd_text = None
     st.session_state.more_details = False
 
-# Function: File Upload
 def file_upload_section():
-    # Resume Input Section
+    # Resume input method
     st.radio("How would you like to provide your Resume?", ["Upload File", "Paste Text"], key="resume_input_method")
-    
     if st.session_state.resume_input_method == "Upload File":
         st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
         if st.session_state.resume_file:
-            if st.session_state.resume_file.type == "text/plain":
-                st.session_state.resume_text = st.session_state.resume_file.read().decode("utf-8")
-            else:
-                st.session_state.resume_text = extract_text(st.session_state.resume_file)
-        else:
-            st.session_state.resume_text = None
+            st.session_state.resume_text = extract_text(st.session_state.resume_file)
+            if not st.session_state.resume_text:
+                st.error("Unable to extract text from the resume. Ensure it's a valid and supported file format (PDF, DOCX, TXT).")
     else:
         st.session_state.resume_text = st.text_area("Paste your Resume:").strip()
-
-    # Job Description Input Section
-    jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
     
-    if jd_input_method == "Upload File":
+    # JD input method
+    st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
+    if st.session_state.jd_input_method == "Upload File":
         jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"], key="jd_file")
         if jd_file:
-            if jd_file.type == "text/plain":
-                st.session_state.jd_text = jd_file.read().decode("utf-8")
-            else:
-                st.session_state.jd_text = extract_text(jd_file)
-        else:
-            st.session_state.jd_text = None
+            st.session_state.jd_text = extract_text(jd_file)
+            if not st.session_state.jd_text:
+                st.error("Unable to extract text from the Job Description. Ensure it's a valid and supported file format (PDF, DOCX, TXT).")
     else:
         st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
 
