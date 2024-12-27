@@ -731,13 +731,22 @@ if "more_details" not in st.session_state:
 
 # Shared Function: Clear Inputs
 def clear_inputs():
+    # Remove variables from session state
     st.session_state.pop("resume_file", None)
     st.session_state.pop("resume_text", None)
     st.session_state.pop("jd_file", None)
     st.session_state.pop("jd_text", None)
+    
+    # Reset variables to ensure no lingering data
     st.session_state.resume_file = None
+    st.session_state.resume_text = None
+    st.session_state.jd_file = None
     st.session_state.jd_text = None
     st.session_state.more_details = False
+    
+    # If using Streamlit UI components that are dependent on the session state,
+    # reset the UI elements (like file uploaders or text areas) as well
+    # st.experimental_rerun()  # Re-renders the app and resets UI components
 
 def file_upload_section():
     # Resume input method
