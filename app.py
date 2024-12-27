@@ -689,10 +689,18 @@ def clear_inputs():
 
 # Function: File Upload
 def file_upload_section():
-    st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
-    jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"])
+    st.radio("How would you like to provide your Resume?", ["Upload File", "Paste Text"], key="resume_input_method")
+    
+    if st.session_state.resume_input_method == "Upload File":
+        st.session_state.resume_file = st.file_uploader("Upload your Resume (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+        st.session_state.resume_text = extract_text(st.session_state.resume_file) if st.session_state.resume_file else None
+    else:
+        st.session_state.resume_text = st.text_area("Paste your Resume:").strip()
+    
+    jd_input_method = st.radio("How would you like to provide the Job Description?", ["Upload File", "Paste Text"], key="jd_input_method")
+    
     if jd_input_method == "Upload File":
-        jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"])
+        jd_file = st.file_uploader("Upload Job Description (PDF, DOCX, TXT):", type=["pdf", "docx", "txt"], key="jd_file")
         st.session_state.jd_text = extract_text(jd_file) if jd_file else None
     else:
         st.session_state.jd_text = st.text_area("Paste the Job Description:").strip()
