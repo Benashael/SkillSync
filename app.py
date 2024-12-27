@@ -905,6 +905,8 @@ elif page == "Recommendations 💡":
 
 # JD and Resume Page
 elif page == "Sample JD and Resume 📄":
+    # Generate and provide download links
+    jd_file_path, resume_file_path = generate_sample_files()
     st.header("📄 Sample JD and Resume")
 
     st.write("""
@@ -925,6 +927,15 @@ elif page == "Sample JD and Resume 📄":
       - Strong problem-solving and analytical skills.
       - Bachelor's degree in Computer Science or related field.
     """)
+
+    # Add download buttons
+    with open(jd_file_path, "rb") as jd_file:
+        st.download_button(
+            label="📥 Download Sample JD",
+            data=jd_file,
+            file_name="sample_jd.txt",
+            mime="text/plain",
+        )
 
     st.subheader("Sample Resume")
     st.write("""
@@ -957,25 +968,6 @@ elif page == "Sample JD and Resume 📄":
     - AWS Certified Solutions Architect  
     """)
 
-    st.subheader("How to Use:")
-    st.write("""
-    - Use the sample JD to identify key skills and requirements.
-    - Match your resume content to reflect the skills and responsibilities mentioned in the JD.
-    - Ensure your resume highlights relevant experience and quantifiable achievements.
-    """)
-
-    # Generate and provide download links
-    jd_file_path, resume_file_path = generate_sample_files()
-
-    # Add download buttons
-    with open(jd_file_path, "rb") as jd_file:
-        st.download_button(
-            label="📥 Download Sample JD",
-            data=jd_file,
-            file_name="sample_jd.txt",
-            mime="text/plain",
-        )
-
     with open(resume_file_path, "rb") as resume_file:
         st.download_button(
             label="📥 Download Sample Resume",
@@ -983,3 +975,10 @@ elif page == "Sample JD and Resume 📄":
             file_name="sample_resume.txt",
             mime="text/plain",
         )
+    
+    st.subheader("How to Use:")
+    st.write("""
+    - Use the sample JD to identify key skills and requirements.
+    - Match your resume content to reflect the skills and responsibilities mentioned in the JD.
+    - Ensure your resume highlights relevant experience and quantifiable achievements.
+    """)
