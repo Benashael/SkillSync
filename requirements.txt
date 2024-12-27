@@ -2,4 +2,5 @@ streamlit
 docx2txt
 PyPDF2
 langdetect
-docx
+python-docx
+reportlab
