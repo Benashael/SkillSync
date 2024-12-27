@@ -714,7 +714,7 @@ def calculate_scores():
 
 # Navigation Menu
 st.sidebar.title("📱 Navigation")
-page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resume Score 📝", "Resume Score with Detailed Breakdown 📊", "Recommendations 💡"])
+page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resume Score 📝", "Resume Score with Detailed Breakdown 📊", "Recommendations 💡", "Sample JD and Resume 📄"])
 
 # Home Page
 if page == "Home 🏠":
@@ -862,4 +862,64 @@ elif page == "Recommendations 💡":
             st.write("#### 📊 Quantifiers")
             st.text_area("Quantifiers", ", ".join(category_details["Quantifiers"]), height=100)
 
-    
+
+# JD and Resume Page
+elif page == "Sample JD and Resume 📄":
+    st.header("📄 Sample JD and Resume")
+
+    st.write("""
+    Get started by exploring sample Job Descriptions (JD) and Resumes to understand how to tailor your application effectively.
+    Use these examples as references to create a compelling resume that aligns with the job you're applying for.
+    """)
+
+    st.subheader("Sample Job Description (JD)")
+    st.write("""
+    **Software Developer Job Description:**
+    - Collaborate with cross-functional teams to define, design, and ship new features.
+    - Develop, test, and deploy scalable and maintainable software applications.
+    - Write clean, efficient, and well-documented code.
+    - Participate in code reviews to ensure high-quality standards.
+    - Stay updated with the latest industry trends and technologies.
+    - Requirements: 
+      - Proficiency in programming languages like Python, Java, or JavaScript.
+      - Strong problem-solving and analytical skills.
+      - Bachelor's degree in Computer Science or related field.
+    """)
+
+    st.subheader("Sample Resume")
+    st.write("""
+    **John Doe**  
+    123 Main Street, City, State, 12345  
+    Email: john.doe@example.com | Phone: +1-234-567-8901  
+
+    **Professional Summary:**  
+    Results-driven Software Developer with 3+ years of experience in developing robust code for high-volume businesses.  
+    Adept at collaborating with teams to deliver high-quality software solutions.  
+
+    **Skills:**  
+    - Proficient in Python, Java, JavaScript, and SQL.  
+    - Experience with frameworks like React and Django.  
+    - Strong understanding of data structures and algorithms.  
+
+    **Experience:**  
+    **Software Developer**  
+    XYZ Tech Solutions, City, State | Jan 2020 – Present  
+    - Developed scalable web applications, improving user engagement by 30%.  
+    - Integrated APIs to enhance application functionality.  
+    - Optimized application performance, reducing load times by 40%.  
+
+    **Education:**  
+    - Bachelor of Science in Computer Science  
+      ABC University, City, State | Graduated: May 2019  
+
+    **Certifications:**  
+    - Certified Python Developer (CPD)  
+    - AWS Certified Solutions Architect  
+    """)
+
+    st.subheader("How to Use:")
+    st.write("""
+    - Use the sample JD to identify key skills and requirements.
+    - Match your resume content to reflect the skills and responsibilities mentioned in the JD.
+    - Ensure your resume highlights relevant experience and quantifiable achievements.
+    """)
