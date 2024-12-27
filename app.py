@@ -472,17 +472,20 @@ BASE_CATEGORY = {
 # Quality Score Calculation (50% Weightage)
 def score_quality(resume_text):
     score = 0
+
     # Check formatting (e.g., headers, one-page limit)
     headers = ["education", "skills", "experience", "certifications", "summary", "achievements"]
     for header in headers:
         if header in resume_text.lower():
             score += 2  # Assign points for each proper header
 
-   # Check strong action verbs (eliminates duplicates)
-    score += sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
-    
+    # Check strong action verbs (eliminates duplicates)
+    action_verb_score = sum(2 for verb in set(STRONG_ACTION_VERBS) if verb.lower() in resume_text.lower())
+    score += min(action_verb_score, 15)  # Add capped action verb score
+
     # Check quantifiers (eliminates duplicates)
-    score += sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
+    quantifier_score = sum(2 for quantifier in set(QUANTIFIERS) if quantifier.lower() in resume_text.lower())
+    score += min(quantifier_score, 15)  # Add capped quantifier score
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
@@ -493,7 +496,7 @@ def score_quality(resume_text):
     else:
         score += 5
 
-    return min(score, 49)  # Cap the quality score at 50
+    return min(score, 49)  # Ensure the total score does not exceed 49
 
 # Relevance Score Calculation (45% Weightage)
 def score_relevance(resume_text, jd_text):
@@ -574,12 +577,14 @@ def show_details(resume_text, jd_text):
         if verb.lower() in resume_text.lower():
             action_verb_score += 2
             matched_action_verbs.add(verb)  # Store the matched verb
+    action_verb_score = min(action_verb_score, 15)  # Cap action verb score to a maximum of 15
 
     # Check quantifiers (eliminates duplicates)
     for quantifier in set(QUANTIFIERS):
         if quantifier.lower() in resume_text.lower():
             quantifier_score += 2
             matched_quantifiers.add(quantifier)  # Store the matched quantifier
+    quantifier_score = min(quantifier_score, 15)  # Cap quantifier score to a maximum of 15
 
     # Check length (favor resumes with 300 to 750 words)
     resume_length = len(resume_text.split())  # Define the resume length
