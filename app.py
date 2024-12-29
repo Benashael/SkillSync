@@ -662,7 +662,7 @@ def show_details(resume_text, jd_text):
     st.write(f"- **Emerging Skills in Resume:** {', '.join(found_skills).upper()}")
     st.write(f"**Total Score for Emerging Skills:** {round(total_skills_score, 2)} / 5")
     
-# Function: Generate Sample JD and Resume
+# Function: Generate Sample JD 
 def generate_sample_files():
     sample_jd = """Software Engineer Job Description:
 - Proficient in Python, Java, or similar programming languages
@@ -671,28 +671,87 @@ def generate_sample_files():
 - Familiarity with cloud platforms such as AWS or Azure
 - Excellent problem-solving and communication skills"""
     
-    sample_resume = """John Doe
-Contact: johndoe@example.com | LinkedIn: linkedin.com/in/johndoe | GitHub: github.com/johndoe
-Summary:
-Experienced Software Engineer with a proven track record of developing scalable web applications.
-Skills:
-- Programming: Python, Java, SQL
-- Web Frameworks: Django, Flask
-- Cloud: AWS, Azure
-Experience:
-Software Engineer, TechCorp (2020–Present)
-- Developed RESTful APIs for client-facing applications.
-- Migrated legacy systems to cloud platforms, increasing system reliability by 30%.
-Education:
-Bachelor of Technology in Computer Science, XYZ University (2016–2020)"""
-
     # Save sample files as .txt
     with open("sample_jd.txt", "w") as f:
         f.write(sample_jd)
-    with open("sample_resume.txt", "w") as f:
-        f.write(sample_resume)
 
-    return "sample_jd.txt", "sample_resume.txt"
+    return "sample_jd.txt"
+
+# Function to create a sample DOCX resume
+def create_sample_resume_docx():
+    doc = Document()
+    doc.add_heading("Sample Resume", level=1)
+    doc.add_paragraph("Name: XXX")
+    doc.add_paragraph("Email: xxx@example.com")
+    doc.add_paragraph("Phone: +XX XXXXXXX")
+    doc.add_paragraph("\nSkills:")
+    doc.add_paragraph(
+        "• Technical Skills: Python | Machine Learning | Data Science | Exploratory Data Analysis (EDA) | Natural Language Processing (NLP)\n"
+        "• Tools: Streamlit | Microsoft Office Suite (Excel, Word, PowerPoint) | Pandas | Scikit-Learn | GitHub | Power BI | OpenCV | NLTK\n"
+        "• Soft Skills: Problem Solving | Communication | Time Management | Analytical Thinking | Critical Thinking"
+    )
+    doc.add_paragraph("\nExperience:")
+    doc.add_paragraph(
+        "• Codsoft | Data Science Intern (May 2024)\n"
+        "  - Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.\n"
+        "  - Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.\n"
+    )
+    doc.add_paragraph(
+        "• PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Data Segmentation Intern (Dec 2023 – Jan 2024)\n"
+        "  - Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reduced processing time by over 97%, and saved more than 20 hours per week, enhancing efficiency and accuracy.\n"
+        "  - Collaborated with DPI teams to implement data-driven strategies for educational initiatives.\n"
+    )
+    doc.add_paragraph(
+        "• Kindle Direct Publishing | Author (Feb 2023 – Aug 2023)\n"
+        "  - Authored and published engaging eBooks on emerging technologies and trending concepts, captivating a diverse audience of tech enthusiasts and professionals, and sold over 55 copies of eBooks.\n"
+        "  - Integrated AI-generated insights and data points using NLP techniques to enrich content and provide cutting-edge perspectives, published 4 books, each with over 12 chapters.\n"
+    )
+    doc.add_paragraph(
+        "• Institution of Electronics and Telecommunication Engineers | Data Science Intern (Jun 2023 – Jul 2023)\n"
+        "  - Engineered real-time data science applications with dynamic Power BI dashboards and advanced Scikit-Learn models, crafting over 10 visualizations for 4 different applications.\n"
+        "  - Formulated and deployed text and image processing techniques using TensorFlow and OpenCV.\n"
+    )
+    doc.add_paragraph(
+        "• YouTube | Content Creator (Jan 2023 – May 2023)\n"
+        "  - Created and unveiled engaging content on trending technologies and their practical applications.\n"
+        "  - Educated over 350 viewers on Python programming, simplifying complex concepts through clear and concise tutorials.\n"
+    )
+    doc.add_paragraph("\nEducation:")
+    doc.add_paragraph(
+        "• SRM Institute of Science and Technology (2022 – 2025)\n"
+        "  Bachelor of Computer Applications (BCA) in Data Science | CGPA: 9.79\n"
+        "  Relevant Coursework: Machine Learning, Data Science, Natural Language Processing, Artificial Intelligence, Computer Vision, Statistics, Data Engineering, Intelligent Automation, Data Analytics\n"
+    )
+    doc.add_paragraph("\nProjects:")
+    doc.add_paragraph(
+        "• Vision Wizard (June 2024)\n"
+        "  - Designed Vision Wizard, a drag-and-drop platform reducing pre-processing time by 80%, enabling users with zero programming knowledge to perform more than 12 computer vision tasks using advanced tools and techniques.\n"
+    )
+    doc.add_paragraph(
+        "• TextTrac (May 2024)\n"
+        "  - Orchestrated NLP tools to perform 13 plus NLP preprocessing tasks with a single click, reducing normalization time by 95%, and enhancing data-driven decision-making through advanced text manipulation and analysis.\n"
+    )
+    doc.add_paragraph(
+        "• AI Hub (Nov 2023 – Feb 2024)\n"
+        "  - Developed AutoDS and AutoNLP solutions, enabling zero-coding, cutting processing time by 70%, and broadening access to over 31 data operations. Revolutionized data processes and democratized advanced analysis and natural language processing.\n"
+    )
+    doc.add_paragraph("\nCertifications:")
+    doc.add_paragraph(
+        "• Completed over 30 professional certifications from Coursera, Cisco, NPTEL, Google Skillshop and other platforms, including:\n"
+        "  - IBM Data Science Professional Certification • Coursera • August 30, 2023\n"
+        "  - The Joy of Computing using Python (IIT Madras) • NPTEL • May 31, 2023\n"
+    )
+    doc.add_paragraph("\nAchievements:")
+    doc.add_paragraph(
+        "• Won 2nd prize in the 2024 Project Day for the AI Hub project, hosted by SRM Group.\n"
+        "• Received a Silver Medal in the 2024 Research Day for the AI Trinity research work, hosted by SRM IST.\n"
+    )
+    
+    # Save the document to a BytesIO buffer
+    buffer = io.BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+    return buffer
 
 # Initialize session state
 if "resume_file" not in st.session_state:
@@ -938,7 +997,6 @@ elif page == "Recommendations 💡":
 # JD and Resume Page
 elif page == "Sample JD and Resume 📄":
     # Generate and provide download links
-    jd_file_path, resume_file_path = generate_sample_files()
     st.header("📄 Sample JD and Resume")
 
     st.write("""
@@ -961,6 +1019,7 @@ elif page == "Sample JD and Resume 📄":
     """)
 
     # Add download buttons
+    jd_file_path = generate_sample_files()
     with open(jd_file_path, "rb") as jd_file:
         st.download_button(
             label="📥 Download Sample JD",
@@ -971,42 +1030,76 @@ elif page == "Sample JD and Resume 📄":
 
     st.subheader("Sample Resume")
     st.write("""
-    **John Doe**  
-    123 Main Street, City, State, 12345  
-    Email: john.doe@example.com | Phone: +1-234-567-8901  
-
-    **Professional Summary:**  
-    Results-driven Software Developer with 3+ years of experience in developing robust code for high-volume businesses.  
-    Adept at collaborating with teams to deliver high-quality software solutions.  
+    **XXX**  
+    Address: XXX, City, State, XXXXX  
+    Email: xxx@example.com | Phone: +XX XXXXXXX  
 
     **Skills:**  
-    - Proficient in Python, Java, JavaScript, and SQL.  
-    - Experience with frameworks like React and Django.  
-    - Strong understanding of data structures and algorithms.  
+    - **Technical Skills:** Python | Machine Learning | Data Science | Exploratory Data Analysis (EDA) | Natural Language Processing (NLP)  
+    - **Tools:** Streamlit | Microsoft Office Suite (Excel, Word, PowerPoint) | Pandas | Scikit-Learn | GitHub | Power BI | OpenCV | NLTK  
+    - **Soft Skills:** Problem Solving | Communication | Time Management | Analytical Thinking | Critical Thinking  
 
     **Experience:**  
-    **Software Developer**  
-    XYZ Tech Solutions, City, State | Jan 2020 – Present  
-    - Developed scalable web applications, improving user engagement by 30%.  
-    - Integrated APIs to enhance application functionality.  
-    - Optimized application performance, reducing load times by 40%.  
+    - **Data Science Intern**  
+      Codsoft | May 2024  
+      - Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.  
+      - Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.  
+
+    - **Data Segmentation Intern**  
+      PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Dec 2023 – Jan 2024  
+      - Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reducing processing time by over 97%, and saving more than 20 hours per week.  
+      - Collaborated with DPI teams to implement data-driven strategies for educational initiatives.  
+
+    - **Author**  
+      Kindle Direct Publishing | Feb 2023 – Aug 2023  
+      - Authored and published engaging eBooks on emerging technologies and trending concepts, selling over 55 copies of eBooks.  
+      - Integrated AI-generated insights and data points using NLP techniques to enrich content, publishing 4 books with over 12 chapters each.  
+
+    - **Data Science Intern**  
+      Institution of Electronics and Telecommunication Engineers | Jun 2023 – Jul 2023  
+      - Engineered real-time data science applications with dynamic Power BI dashboards and advanced Scikit-Learn models, crafting over 10 visualizations for 4 different applications.  
+      - Formulated and deployed text and image processing techniques using TensorFlow and OpenCV.  
+
+    - **Content Creator**  
+      YouTube | Jan 2023 – May 2023  
+      - Created and unveiled engaging content on trending technologies and their practical applications.  
+      - Educated over 350 viewers on Python programming, simplifying complex concepts through clear and concise tutorials.  
 
     **Education:**  
-    - Bachelor of Science in Computer Science  
-      ABC University, City, State | Graduated: May 2019  
+    - Bachelor of Computer Applications (BCA) in Data Science  
+      SRM Institute of Science and Technology | 2022 – 2025  
+      - CGPA: 9.79  
+      - Relevant Coursework: Machine Learning, Data Science, Natural Language Processing, Artificial Intelligence, Computer Vision, Statistics, Data Engineering, Intelligent Automation, Data Analytics  
+
+    **Projects:**  
+    - **Vision Wizard (June 2024):**  
+      Designed Vision Wizard, a drag-and-drop platform reducing pre-processing time by 80%, enabling users with zero programming knowledge to perform more than 12 computer vision tasks using advanced tools and techniques.  
+
+    - **TextTrac (May 2024):**  
+      Orchestrated NLP tools to perform 13 plus NLP preprocessing tasks with a single click, reducing normalization time by 95%, and enhancing data-driven decision-making through advanced text manipulation and analysis.  
+
+    - **AI Hub (Nov 2023 – Feb 2024):**  
+      Developed AutoDS and AutoNLP solutions, enabling zero-coding, cutting processing time by 70%, and broadening access to over 31 data operations. Revolutionized data processes and democratized advanced analysis and natural language processing.  
 
     **Certifications:**  
-    - Certified Python Developer (CPD)  
-    - AWS Certified Solutions Architect  
-    """)
+    - Completed over 30 professional certifications from Coursera, Cisco, NPTEL, Google Skillshop, and other platforms, including:  
+      - IBM Data Science Professional Certification | Coursera | August 30, 2023  
+      - The Joy of Computing using Python (IIT Madras) | NPTEL | May 31, 2023  
 
-    with open(resume_file_path, "rb") as resume_file:
-        st.download_button(
-            label="📥 Download Sample Resume",
-            data=resume_file,
-            file_name="sample_resume.txt",
-            mime="text/plain",
-        )
+    **Achievements:**  
+    - Won 2nd prize in the 2024 Project Day for the AI Hub project, hosted by SRM Group.  
+    - Received a Silver Medal in the 2024 Research Day for the AI Trinity research work, hosted by SRM IST.  
+    """)
+   
+    # Usage in Streamlit for DOCX
+    docx_buffer = create_sample_resume_docx()
+    st.download_button(
+        label="📥 Download Sample Resume (DOCX)",
+        data=docx_buffer,
+        file_name="sample_resume.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+
     
     st.subheader("How to Use:")
     st.write("""
