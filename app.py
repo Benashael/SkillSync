@@ -696,11 +696,13 @@ def create_sample_resume_docx():
         "• Codsoft | Data Science Intern (May 2024)\n"
         "  - Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.\n"
         "  - Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.\n"
+        " "
     )
     doc.add_paragraph(
         "• PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Data Segmentation Intern (Dec 2023 – Jan 2024)\n"
         "  - Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reduced processing time by over 97%, and saved more than 20 hours per week, enhancing efficiency and accuracy.\n"
         "  - Collaborated with DPI teams to implement data-driven strategies for educational initiatives.\n"
+        " "
     )
     doc.add_paragraph(
         "• Kindle Direct Publishing | Author (Feb 2023 – Aug 2023)\n"
