@@ -538,7 +538,7 @@ def score_relevance(resume_text, jd_text):
 # Trending Skills Score Calculation (5% Weightage)
 def score_trending_skills(resume_text):
     # Convert resume text to lowercase for case-insensitive matching
-    resume_text_lower = resume_text.lower()
+    resume_text = re.sub(r'[^\w\s]', '', resume_text.lower())
     
     # Create a set to track skills found in the resume (avoiding duplicates)
     found_skills = set()
