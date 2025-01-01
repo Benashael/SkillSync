@@ -3,6 +3,7 @@ import docx2txt
 from PyPDF2 import PdfReader
 from langdetect import detect
 import io
+import re
 from docx import Document
 
 # Set up Streamlit app
