@@ -692,12 +692,13 @@ def create_sample_resume_docx():
         "• Soft Skills: Problem Solving | Communication | Time Management | Analytical Thinking | Critical Thinking"
     )
     doc.add_paragraph("\nExperience:")
-    doc.add_paragraph(
+    paragraph = doc.add_paragraph(
         "• Codsoft | Data Science Intern (May 2024)\n"
         "  - Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.\n"
         "  - Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.\n"
-        "\n"
     )
+    # Set spacing after the paragraph
+    paragraph.paragraph_format.space_after = Pt(12)
     doc.add_paragraph(
         "• PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Data Segmentation Intern (Dec 2023 – Jan 2024)\n"
         "  - Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reduced processing time by over 97%, and saved more than 20 hours per week, enhancing efficiency and accuracy.\n"
