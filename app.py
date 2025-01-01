@@ -498,7 +498,7 @@ def score_quality(resume_text):
     else:
         score += 5
 
-    return min(score, 49)  # Ensure the total score does not exceed 49
+    return round(min(score, 49), 2)  # Ensure the total score does not exceed 49
 
 # Relevance Score Calculation (45% Weightage)
 def score_relevance(resume_text, jd_text):
@@ -532,7 +532,7 @@ def score_relevance(resume_text, jd_text):
     
     total_score = 10 + relevance_score  # Add base score of 20
     
-    return min(total_score, 43)  # Return matching words and capped score
+    return round(min(total_score, 43), 2)  # Return matching words and capped score
 
 
 # Trending Skills Score Calculation (5% Weightage)
@@ -550,7 +550,7 @@ def score_trending_skills(resume_text):
 
     # Calculate the score based on the number of unique skills found
     score = len(found_skills) * 0.2  # Each skill adds 1 to the score
-    return min(score, 5)  # Cap trending skills score at 5
+    return round(min(score, 5), 2)  # Cap trending skills score at 5
 
 def show_details(resume_text, jd_text):
     st.write("### 🔍 Detailed Breakdown of Your Resume Score")
