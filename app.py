@@ -696,7 +696,7 @@ def create_sample_resume_docx():
         "• Codsoft | Data Science Intern (May 2024)\n"
         "  - Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.\n"
         "  - Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.\n"
-        " "
+        "\n"
     )
     doc.add_paragraph(
         "• PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Data Segmentation Intern (Dec 2023 – Jan 2024)\n"
