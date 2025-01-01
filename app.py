@@ -1043,28 +1043,23 @@ elif page == "Sample JD and Resume 📄":
     **Experience:**  
     - **Data Science Intern**  
       Codsoft | May 2024  
-      * Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making.  
-      * Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.  
+      Architected dynamic web applications using Python and Streamlit, transformed more than 7 complex datasets into actionable insights and boosted prediction accuracy to over 95% for enhanced decision-making. Utilized Seaborn and Matplotlib to create 5 plus interactive dashboards, enhancing data visualization and insights.  
 
     - **Data Segmentation Intern**  
       PTA, Directorate of Public Instruction (DPI), Government of Tamil Nadu | Dec 2023 – Jan 2024  
-      * Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reducing processing time by over 97%, and saving more than 20 hours per week.  
-      * Collaborated with DPI teams to implement data-driven strategies for educational initiatives.  
+      Automated and streamlined data segmentation processes using Python and algorithms on over 500,000 continuous records across 50 fields, reducing processing time by over 97%, and saving more than 20 hours per week. Collaborated with DPI teams to implement data-driven strategies for educational initiatives.  
 
     - **Author**  
       Kindle Direct Publishing | Feb 2023 – Aug 2023  
-      * Authored and published engaging eBooks on emerging technologies and trending concepts, selling over 55 copies of eBooks.  
-      * Integrated AI-generated insights and data points using NLP techniques to enrich content, publishing 4 books with over 12 chapters each.  
+      Authored and published engaging eBooks on emerging technologies and trending concepts, selling over 55 copies of eBooks. Integrated AI-generated insights and data points using NLP techniques to enrich content, publishing 4 books with over 12 chapters each.  
 
     - **Data Science Intern**  
       Institution of Electronics and Telecommunication Engineers | Jun 2023 – Jul 2023  
-      * Engineered real-time data science applications with dynamic Power BI dashboards and advanced Scikit-Learn models, crafting over 10 visualizations for 4 different applications.  
-      * Formulated and deployed text and image processing techniques using TensorFlow and OpenCV.  
+      Engineered real-time data science applications with dynamic Power BI dashboards and advanced Scikit-Learn models, crafting over 10 visualizations for 4 different applications. Formulated and deployed text and image processing techniques using TensorFlow and OpenCV.  
 
     - **Content Creator**  
       YouTube | Jan 2023 – May 2023  
-      * Created and unveiled engaging content on trending technologies and their practical applications.  
-      * Educated over 350 viewers on Python programming, simplifying complex concepts through clear and concise tutorials.  
+      Created and unveiled engaging content on trending technologies and their practical applications. Educated over 350 viewers on Python programming, simplifying complex concepts through clear and concise tutorials.  
 
     **Education:**  
     - Bachelor of Computer Applications (BCA) in Data Science  
