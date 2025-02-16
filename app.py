@@ -846,7 +846,7 @@ def calculate_scores():
 
 # Navigation Menu
 st.sidebar.title("📱 Navigation")
-page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resume Score 📝", "Resume Score with Detailed Breakdown 📊", "Recommendations 💡", "Sample JD and Resume 📄"])
+page = st.sidebar.radio("**🌐 Select a Feature**", ["Home 🏠", "Simple Resume Score 📝", "Resume Score with Detailed Breakdown 📊", "Recommendations 💡", "Sample JD and Resume 📄", "Quick Links 🔗"])
 
 # Home Page
 if page == "Home 🏠":
@@ -1103,3 +1103,18 @@ elif page == "Sample JD and Resume 📄":
     - Match your resume content to reflect the skills and responsibilities mentioned in the JD.
     - Ensure your resume highlights relevant experience and quantifiable achievements.
     """)
+
+elif page == "Quick Links 🔗":
+    st.header("🔗 Quick Links")
+    st.write("Click on any link below to navigate to the respective application:")
+
+    links = {
+        "🤖 Model Craft": "https://modelcraft-uihxqxgjthmusarv6kscuz.streamlit.app/",
+        "🧙‍♂️ Vision Wizard": "https://vision-wizard-durnsdepglthkhzx2peekt.streamlit.app/",
+        "✍️ TextTrac": "https://texttrac-mmmj5kiucvh9muj66gekp4.streamlit.app/",
+        "📂 Data Weaver": "https://aybzbegfeczo4yfievejqk.streamlit.app/",
+        "💰 TradeLens": "https://glseycvc2rbucwhk3esh85.streamlit.app/"
+    }
+    
+    for name, url in links.items():
+        st.link_button(name, url, use_container_width=True)
